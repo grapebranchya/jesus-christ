@@ -1,0 +1,2194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mobile App</title>
+    <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M23 0h-14c-1.65 0-3 1.35-3 3v26c0 1.65 1.35 3 3 3h14c1.65 0 3-1.35 3-3v-26c0-1.65-1.35-3-3-3zM12 1.5h8v1h-8v-1zM16 30c-1.105 0-2-0.895-2-2s0.895-2 2-2 2 0.895 2 2-0.895 2-2 2zM24 24h-16v-20h16v20z'%3E%3C/path%3E%3C/svg%3E" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M23 0h-14c-1.65 0-3 1.35-3 3v26c0 1.65 1.35 3 3 3h14c1.65 0 3-1.35 3-3v-26c0-1.65-1.35-3-3-3zM12 1.5h8v1h-8v-1zM16 30c-1.105 0-2-0.895-2-2s0.895-2 2-2 2 0.895 2 2-0.895 2-2 2zM24 24h-16v-20h16v20z'%3E%3C/path%3E%3C/svg%3E" />
+    <style type="text/css">
+        html body{font:62.5% Verdana,Arial,Trebuchet MS}
+        #app{position:relative;margin:0 auto}
+        @media(min-width:992px){#header,#app{max-width:970px}}
+        /* Simple Reset */
+        blockquote,body,div,fieldset,form,h1,h2,h3,h4,h5,h6,html,input,li,ol,p,span,ul{margin:0;padding:0}
+        fieldset,img{border:none;outline:0}
+        img{width:auto;height:auto;max-height:300px;max-width:300px}
+        li,ol,ul{list-style:none}
+        a,a:focus,a:hover{text-decoration:none}
+        .fl{float:left}
+        .fr{float:right}
+        .cl{clear:both}
+        /* General Styles */
+        #loader{position:fixed;top:0;right:0;bottom:0;left:0;background-color:rgba(0,0,0,.1);z-index:99}
+        #loader .inner{position:absolute;top:0;right:0;bottom:0;left:0;width:80px;height:60px;margin:auto;padding:20px 15px 5px 15px;text-align:center;color:#777;background-color:rgba(255,255,255,.9);z-index:100;border-radius:15px}
+        #headerwrap{position:fixed;top:0;left:0;right:0;height:45px;background:#333;border-top:1px solid #363639;border-bottom:1px solid #151518;background-image:linear-gradient(top,#404048 16%,#2a2a30 58%);box-shadow:0 0 3px 4px rgba(0,0,0,.3);background-image:-o-linear-gradient(top,#404048 16%,#2a2a30 58%);background-image:-moz-linear-gradient(top,#404048 16%,#2a2a30 58%);background-image:-webkit-linear-gradient(top,#404048 16%,#2a2a30 58%);background-image:-ms-linear-gradient(top,#404048 16%,#2a2a30 58%);background-image:-webkit-gradient(linear,left top,left bottom,color-stop(.16,#404048),color-stop(.58,#2a2a30));z-index:999}
+        #header{width:100%;margin:0 auto;height:45px}
+        #contentwrap{width:100%;background:#f7f7f7;padding-top:45px}
+        #contentwrap #entry-content{font-size:14px}
+        #contentwrap #entry-content>*{font-size:inherit;margin-bottom:20px}
+        #contentwrap #entry-content>p{margin-top:20px}
+        #entry-content>.tts{margin:0;padding:0;border:0;border-radius:0;background-color:#fde6e0}
+        #entry-content>div.tts,#entry-content>p.tts{margin:15px 0;padding:10px;border:1px solid #dcd6d6;border-radius:3px;background-color:#f9f2f4}
+        .post{background:#f7f7f7;border-top:1px solid #fff;padding:15px}
+        .post,.single-post{border-bottom:1px solid #e5e5e5}
+        .single-post{border-top:1px solid #e5e5e5}
+        .single-post h2{font-size:18px;text-align:center}
+        .single-post a{text-decoration:underline}
+        #title{padding:10px 15px;color:#666}
+        #title h2{color:#333}
+        #info{padding:12px 0 2px;background:#eee;color:#666}
+        #info h2{color:#666}
+        #info h2,#more{text-align:center}
+        #more{background:#f7f7f7}
+        #more a{display:inline-block;padding:8px}
+        #info a,#more a,#title a{color:#666}
+        #loading{background:#f7f7f7;clear:both;font-size:12px;height:26px;line-height:26px;padding:5px 0;border-top:1px solid #e5e5e5;text-align:center}
+        #comments{background:#f7f7f7;text-align:center}
+        #comment,input[type=email],input[type=text],input[type=url],input[type=password]{outline:0;width:100%;margin-bottom:10px;font-size:14px;line-height:26px}
+        #comment,input[type=email],input[type=text],input[type=url],input[type=password],#more a button,#more select{height:26px;margin-bottom:0;border:1px solid #777;box-shadow:0 1px 1px #fff,inset 0 2px 6px rgba(0,0,0,.35);border-radius:6px}
+        input[type=email],input[type=text],input[type=url],input[type=password]{padding-left:4px}
+        select#lang{margin-left:10px;padding:3px 0}
+        #more select{width:auto;min-width:50px;padding:3px}
+        input::placeholder{padding-left:5px}
+        input::-webkit-input-placeholder{padding-left:5px}
+        input:-moz-placeholder{padding-left:5px}
+        input::-moz-placeholder{padding-left:5px}
+        input:-ms-input-placeholder{padding-left:5px}
+        #comment{height:60px}
+        input[type=submit]{outline:0;cursor:pointer;width:100%;padding:4px 10px;color:#fff;font-size:14px;border:1px solid #777;text-shadow:0 1px 1px rgba(0,0,0,.5);border-radius:6px;background:#1c92c1}
+        #respond a{color:#666;display:block;padding:8px 0}
+        #footerwrap{width:100%;text-align:center}
+        #footer{background:#f7f7f7;border-top:1px solid #e5e5e5;padding:8px}
+        h1{font-size:14px;margin:0 0 10px}
+        #header h1{float:left;width:calc(100% - 90px);height:45px;overflow:hidden;color:#ccc;margin:0;line-height:45px;padding-left:8px}
+        #header h1 img {max-width:32px;max-height:32px;margin-right:5px;vertical-align:middle}
+        #header h1 a{color:#fff;text-decoration:none;text-shadow:1px 1px 1px #000}
+        #top-nav{margin-right:10px;padding-top:4px}
+        #top-nav,#top-nav li{float:right}
+        #header #top-nav li a{color:#c4c4c5;margin:2px 0 0 5px;display:block;background:#666;border-radius:5px;padding:0 6px;height:30px;line-height:30px;font-size:14px;font-weight:400;border:1px solid #040405;box-shadow:inset 0 1px 0 0 hsla(0,0%,100%,.1),0 1px 0 0 hsla(0,0%,100%,.1);background-image:linear-gradient(top,#404048 16%,#2a2a30 58%);background-image:-o-linear-gradient(top,#404048 16%,#2a2a30 58%);background-image:-moz-linear-gradient(top,#404048 16%,#2a2a30 58%);background-image:-webkit-linear-gradient(top,#404048 16%,#2a2a30 58%);background-image:-ms-linear-gradient(top,#404048 16%,#2a2a30 58%);background-image:-webkit-gradient(linear,left top,left bottom,color-stop(.16,#404048),color-stop(.58,#2a2a30))}
+        h2{font-size:16px;margin:0 0 15px}
+        h2 a,h2.title{color:#333}
+        h2.title{margin:0}
+        h3,p{font-size:12px}
+        p,p a{color:#666}
+        #header p{font-size:12px;margin:0}
+        #header p,#header p a{color:#888}
+        .archive a{display:block}
+        .archive img{width:90px;height:60px;margin:5px 0 0 5px;border:1px solid #999;box-shadow:0 0 3px rgba(0,0,0,.2);display:block;float:right}
+        .post p.subtitle{font-size:12px;margin:0}
+        .post div.subtitle{border:1px solid #ddd;border-radius:5px;padding:10px 8px;line-height:16px;margin-bottom:20px}
+        .post div.subtitle,.post div.subtitle a{color:#666}
+        .post p.post-tag{margin-top:20px}
+        .post p#spinner{margin:10px 0}
+        .post p.singleline{margin:0}
+        .post p.commentfoot{font-size:12px}
+        .oneline p{margin:0}
+        .comments p{font-size:12px;margin:0}
+        .comments p a{color:#d54e21}
+        #footer p{font-size:12px;margin:0}
+        #footer p,#footer p a{color:#666}
+        blockquote{border-left:4px solid #ccc;margin:8px;padding-left:4px}
+        .post-comment{border:none}
+        #btn-headphones,#btn-play,#btn-pause,#btn-stop,#btn-top{display:inline-block;width:30px;height:30px;line-height:30px;text-align:center;padding:0;border:0;border-radius:50%;background:rgba(0,0,0,0)}
+        #btn-play,#btn-pause,#btn-stop,#btn-top,#bigger,#smaller,.btn-favorite{cursor:pointer;border:1px solid #777;box-shadow:0 1px 1px #fff, inset 0 2px 6px rgb(0 0 0 / 35%)}
+        #bigger,#smaller,#btn-favorite{margin-left:4px}
+        .post p .pn{border:1px solid #ddd;padding:5px 10px;border-radius:15px;text-decoration:none}
+        .single-post .favorites{margin:8px 0;text-align:center}
+        .single-post .favorites .btn-favorite{display:inline-block;width:40px;height:40px;margin-bottom:10px;line-height:40px;text-align:center;border-radius:50%}
+        #bigger,#smaller{width:38px;height:30px;border-radius:5px}
+        #btn-play.invisible,#btn-pause.invisible,#btn-stop.invisible,#btn-top.invisible,.icon.invisible{display:none}
+        #btn-play.visible,#btn-pause.visible,#btn-stop.visible,#btn-top.visible,.icon.visible{display:inline-block}
+        #btn-top{position:fixed;right:10px;opacity:0.7;bottom:25px}
+        .hide{display:none}
+        .show{display:block}
+        /* nav */
+        #nav,#sch{position:fixed;top:55px;right:8px;display:none;width:auto;max-width:340px;max-height:calc(100% - 90px);overflow-x:hidden;overflow-y:auto;padding:10px;background:#333;border:1px solid #000;box-shadow:0 0 2px 2px rgba(0,0,0,.5);border-radius:4px}
+        @media(max-width:380px){#nav,#sch{width:calc(100% - 40px)}}
+        #nav dl,#sch dl{margin:0}
+        #sch dt{position:relative}
+        #sch .zoom{position:absolute;left:7px;top:7px}
+        #sch #search-text{width:calc(100% - 24px);margin-bottom:8px;padding-left:24px}
+        #nav dd,#nav dt,#sch dd,#sch dt{padding:0;color:#999;font-size:12px}
+        #nav a,#sch a{color:#f7f7f7;padding:5px 0;display:block;float:left;margin:0 10px}
+        #nav a.active,#sch a.active{text-decoration:underline}
+        /* single media */
+        .single-post embed,.single-post iframe,.single-post object,.single-post video,.single-post audio{max-width:100%;margin:0 auto;display:block}
+        /* related posts */
+        .related-posts{clear:both;margin:15px 0 !important}
+        .related-posts .related-title{margin:20px 0 10px;padding:0;font-weight:bold !important;font-size:inherit !important}
+        .related-posts .related-items{line-height:1.65em !important}
+        .related-posts .related-items .related-item{list-style:decimal inside none;height:1.75em;overflow:hidden}
+        .related-posts .related-items .related-item a{font-size:inherit !important}
+        /* Bootstrap-highlighting-of-code */
+        .prettyprint li,.prettyprint ol,.prettyprint ul{list-style:decimal}
+        .prettyprint{padding:8px;background-color:#f7f7f9;border:1px solid #e1e1e8}
+        .prettyprint.linenums{-webkit-box-shadow:inset 40px 0 0 #fbfbfc,inset 41px 0 0 #ececf0;-moz-box-shadow:inset 40px 0 0 #fbfbfc,inset 41px 0 0 #ececf0;box-shadow:inset 40px 0 0 #fbfbfc,inset 41px 0 0 #ececf0}
+        .com{color:#93a1a1}
+        .lit{color:#195f91}
+        .clo,.opn,.pun{color:#93a1a1}
+        .fun{color:#dc322f}
+        .atv,.str{color:#d14}
+        .kwd,.linenums .tag{color:#1e347b}
+        .atn,.dec,.typ,.var{color:teal}
+        .pln{color:#48484c}
+        ol.linenums{margin:0 0 0 33px}
+        ol.linenums li{padding-left:12px;color:#bebec5;line-height:18px;text-shadow:0 1px 0 #fff}
+        code,pre{padding:0 3px 2px;font-family:Menlo,Monaco,Courier New,monospace;font-size:12px;color:#333;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px}
+        code{padding:3px 4px;color:#d14;background-color:#f7f7f9;border:1px solid #e1e1e8;border-image:initial}
+        pre{display:block;padding:8.5px;margin:0 0 9px;font-size:12px;line-height:18px;background-color:#f5f5f5;border:1px solid #ccc;border:1px solid rgba(0,0,0,.15);-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;white-space:pre;white-space:pre-wrap;word-break:break-all}
+        pre.prettyprint{margin-top:10px;margin-bottom:18px}
+        pre code{padding:0;background-color:transparent}
+        /* Glyphicons */
+        .icon{display:inline-block;width:14px;height:14px;line-height:14px;background-image:url(data:image/png;base64,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);background-position:14px 14px;background-repeat:no-repeat;vertical-align:text-top}
+        .icon-white{background-image:url(data:image/png;base64,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)}
+        .muted{opacity:.5}
+        /* First line */
+        .icon-glass{background-position:0 0}
+        .icon-music{background-position:-24px 0}
+        .icon-search{background-position:-48px 0}
+        .icon-envelope{background-position:-72px 0}
+        .icon-heart{background-position:-96px 0}
+        .icon-star{background-position:-120px 0}
+        .icon-star-empty{background-position:-144px 0}
+        .icon-user{background-position:-168px 0}
+        .icon-film{background-position:-192px 0}
+        .icon-th-large{background-position:-216px 0}
+        .icon-th{background-position:-240px 0}
+        .icon-th-list{background-position:-264px 0}
+        .icon-ok{background-position:-288px 0}
+        .icon-remove{background-position:-312px 0}
+        .icon-zoom-in{background-position:-336px 0}
+        .icon-zoom-out{background-position:-360px 0}
+        .icon-off{background-position:-384px 0}
+        .icon-signal{background-position:-408px 0}
+        .icon-cog{background-position:-432px 0}
+        .icon-trash{background-position:-456px 0}
+        /* Second line */
+        .icon-home{background-position:0 -24px}
+        .icon-file{background-position:-24px -24px}
+        .icon-time{background-position:-48px -24px}
+        .icon-road{background-position:-72px -24px}
+        .icon-download-alt{background-position:-96px -24px}
+        .icon-download{background-position:-120px -24px}
+        .icon-upload{background-position:-144px -24px}
+        .icon-inbox{background-position:-168px -24px}
+        .icon-play-circle{background-position:-192px -24px}
+        .icon-repeat{background-position:-216px -24px}
+        .icon-refresh{background-position:-240px -24px}
+        .icon-list-alt{background-position:-264px -24px}
+        .icon-lock{background-position:-287px -24px}
+        .icon-flag{background-position:-312px -24px}
+        .icon-headphones{background-position:-336px -24px}
+        .icon-volume-off{background-position:-360px -24px}
+        .icon-volume-down{background-position:-384px -24px}
+        .icon-volume-up{background-position:-408px -24px}
+        .icon-qrcode{background-position:-432px -24px}
+        .icon-barcode{background-position:-456px -24px}
+        /* Third line */
+        .icon-tag{background-position:0 -48px}
+        .icon-tags{background-position:-25px -48px}
+        .icon-book{background-position:-48px -48px}
+        .icon-bookmark{background-position:-72px -48px}
+        .icon-print{background-position:-96px -48px}
+        .icon-camera{background-position:-120px -48px}
+        .icon-font{background-position:-144px -48px}
+        .icon-bold{background-position:-167px -48px}
+        .icon-italic{background-position:-192px -48px}
+        .icon-text-height{background-position:-216px -48px}
+        .icon-text-width{background-position:-240px -48px}
+        .icon-align-left{background-position:-264px -48px}
+        .icon-align-center{background-position:-288px -48px}
+        .icon-align-right{background-position:-312px -48px}
+        .icon-align-justify{background-position:-336px -48px}
+        .icon-list{background-position:-360px -48px}
+        .icon-indent-left{background-position:-384px -48px}
+        .icon-indent-right{background-position:-408px -48px}
+        .icon-facetime-video{background-position:-432px -48px}
+        .icon-picture{background-position:-456px -48px}
+        /* Fourth line */
+        .icon-pencil{background-position:0 -72px}
+        .icon-map-marker{background-position:-24px -72px}
+        .icon-adjust{background-position:-48px -72px}
+        .icon-tint{background-position:-72px -72px}
+        .icon-edit{background-position:-96px -72px}
+        .icon-share{background-position:-120px -72px}
+        .icon-check{background-position:-144px -72px}
+        .icon-move{background-position:-168px -72px}
+        .icon-step-backward{background-position:-192px -72px}
+        .icon-fast-backward{background-position:-216px -72px}
+        .icon-backward{background-position:-240px -72px}
+        .icon-play{background-position:-264px -72px}
+        .icon-pause{background-position:-288px -72px}
+        .icon-stop{background-position:-312px -72px}
+        .icon-forward{background-position:-336px -72px}
+        .icon-fast-forward{background-position:-360px -72px}
+        .icon-step-forward{background-position:-384px -72px}
+        .icon-eject{background-position:-408px -72px}
+        .icon-chevron-left{background-position:-432px -72px}
+        .icon-chevron-right{background-position:-456px -72px}
+        /* Fifth line */
+        .icon-plus-sign{background-position:0 -96px}
+        .icon-minus-sign{background-position:-24px -96px}
+        .icon-remove-sign{background-position:-48px -96px}
+        .icon-ok-sign{background-position:-72px -96px}
+        .icon-question-sign{background-position:-96px -96px}
+        .icon-info-sign{background-position:-120px -96px}
+        .icon-screenshot{background-position:-144px -96px}
+        .icon-remove-circle{background-position:-168px -96px}
+        .icon-ok-circle{background-position:-192px -96px}
+        .icon-ban-circle{background-position:-216px -96px}
+        .icon-arrow-left{background-position:-240px -96px}
+        .icon-arrow-right{background-position:-264px -96px}
+        .icon-arrow-up{background-position:-289px -96px}
+        .icon-arrow-down{background-position:-312px -96px}
+        .icon-share-alt{background-position:-336px -96px}
+        .icon-resize-full{background-position:-360px -96px}
+        .icon-resize-small{background-position:-384px -96px}
+        .icon-plus{background-position:-408px -96px}
+        .icon-minus{background-position:-433px -96px}
+        .icon-asterisk{background-position:-456px -96px}
+        /* Sixth line */
+        .icon-exclamation-sign{background-position:0 -120px}
+        .icon-gift{background-position:-24px -120px}
+        .icon-leaf{background-position:-48px -120px}
+        .icon-fire{background-position:-72px -120px}
+        .icon-eye-open{background-position:-96px -120px}
+        .icon-eye-close{background-position:-120px -120px}
+        .icon-warning-sign{background-position:-144px -120px}
+        .icon-plane{background-position:-168px -120px}
+        .icon-calendar{background-position:-192px -120px}
+        .icon-random{background-position:-216px -120px;width:16px}
+        .icon-comment{background-position:-240px -120px}
+        .icon-magnet{background-position:-264px -120px}
+        .icon-chevron-up{background-position:-288px -120px}
+        .icon-chevron-down{background-position:-313px -119px}
+        .icon-retweet{background-position:-336px -120px}
+        .icon-shopping-cart{background-position:-360px -120px}
+        .icon-folder-close{background-position:-384px -120px;width:16px}
+        .icon-folder-open{background-position:-408px -120px;width:16px}
+        .icon-resize-vertical{background-position:-432px -119px}
+        .icon-resize-horizontal{background-position:-456px -118px}
+        /* Seventh line */
+        .icon-hdd{background-position:0 -144px}
+        .icon-bullhorn{background-position:-24px -144px}
+        .icon-bell{background-position:-48px -144px}
+        .icon-certificate{background-position:-72px -144px}
+        .icon-thumbs-up{background-position:-96px -144px}
+        .icon-thumbs-down{background-position:-120px -144px}
+        .icon-hand-right{background-position:-144px -144px}
+        .icon-hand-left{background-position:-168px -144px}
+        .icon-hand-up{background-position:-192px -144px}
+        .icon-hand-down{background-position:-216px -144px}
+        .icon-circle-arrow-right{background-position:-240px -144px}
+        .icon-circle-arrow-left{background-position:-264px -144px}
+        .icon-circle-arrow-up{background-position:-288px -144px}
+        .icon-circle-arrow-down{background-position:-312px -144px}
+        .icon-globe{background-position:-336px -144px}
+        .icon-wrench{background-position:-360px -144px}
+        .icon-tasks{background-position:-384px -144px}
+        .icon-filter{background-position:-408px -144px}
+        .icon-briefcase{background-position:-432px -144px}
+        .icon-fullscreen{background-position:-456px -144px}
+        .icon-loading::before{content:'';display:inline-block;min-width:16px;min-height:16px}
+        .icon-loading::before,img.img-thumbnail{background:#eee url('data:image/gif;base64,R0lGODlhEAAQAPULAOfn597e3qWlpb29va2trcbGxu/v787OzrW1tdbW1vf392RkZJCQkCUlJf///3Nzc4uLiz09PW9vbz4+Pj8/Pzo6OpiYmH19fUFBQS4uLo2NjUBAQGtra5SUlH9/fzk5OWdnZ4GBgTU1NXZ2di8vLzw8PAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwH//wAh+QQFBgALACwAAAAAEAAQAEAGlsCFcOEQIkbFoVDQaQaUQgMCQRg4RqOBYtQ5IAQEBeCrWAQAC4Ag4VUnFoZEMk0aLTqkxUGAhu7nQglvQwoFHWFQAwIFBkoABGgFBA4KBIOOI294lAhPQwBoCCQDeHsHC2JFASN1CmVEhQIIaIoCAp5KhQMDBZ8HgGZ9RF8HhQkKBgFaCWCvqFMOkgsFAo1QlEIHVqhzQQAh+QQFBgALACwAAAAADQALAAAFQeAijovwkOQTLE8kRsNoPGe7QFEhGkuRt4nI6QY5sASLWIS3AJggJIUBQUrEUKLDAIEAYEUDAqH7JRlW5cUBWQ4BACH5BAUGAAsALAEAAAAPAAgAAAU+4CKORDeeYwcsnrcYLsoKS+d2n7wcXmIvn1hggRAkaoPAgZBLfD4Gw0CAODkUnifCIQIcZB7TaFAwyADiRQgAIfkEBQYACwAsAwAAAA0ACgAABTzgIi6DMJ4GIgrXolzHqBAquwhVPAYmYQUVyylAKgASg1ahUlGMHKcLc3CqWkzV7MViIWRFQGbluyBQRSEAIfkECQYACgAsBQAAAAsADQAABT6gohyDaIqGUhCikJhlISiIFJyBDEjIORqBA2QkkfhEEIzkcFQQek1kcXiUYJRHRCHquM58CQkgiWmWEgJHCAAh+QQFBgALACwFAAAACwAQAAAGacDF4jBwCI8Lw6JAcCgQgeNgSRgKAEdBgGkQHBYKgGNwMAACBEPC4lEojAsnwWNJxJHLAh5pYNP3AB6CHnBHCHpCCkgOHiUeUQUJYQQlAAIlJQoCCQcWCCUICwkIhUKYWHsLAKCpQkpHQQAh+QQFBgALACwGAAQACgAMAAAFO+AiigqACONYCESQjsebEoKAvIYAQWhaxLIFZAMBLASBBIJj4nAUBGdhgwoURJzNIptIbbSLzSDlJKVCACH5BAkGAAsALAMABQANAAsAAAZHwIVwSEQAiMhEAslUFAaDAnNIqA4WS+QhKwQxBSGBYYEIeAGBQsigDgkHIkQIdAARFoDDwiByg0QLcwFDBSKDf3sgUkxzU0EAIfkEBQYADwAsAQAFAA8ACwAABFfwPYGUk04VCuQDx+U9STI+hXE+2jAUkmCeBoIQg3QIohd0EsOi0VCcBoLUg8gALJqABMOQEBAUiACqQWAsEgsYVSRcOLyPLtCTaOS8DgPjcMrEGBeLJwIAIfkEBQYACwAsAAAGAA0ACgAABTjgIhaMaJrSNEnHeTJSXLh0gtCvioupyBAGQ2KgGM0SEwSBERAkTorYQlAaCAwmAGtaWhCeNOspBAAh+QQFBgALACwAAAMACwANAAAFPOBSBMuxnOjyUILxFOkCMBRlKHGeMk+f5KuaDhUY6BQCykO3ahGMC1LJFHgNEIAYg7EYEES7n3eByx2gIQAh+QQFBgALACwAAAEACAAOAAAFOuAiBtkhnkaWnYlYZASxSLAiSW1CS8p5aieBZhj43XA+EcDkGwx9AgliUUj0Fi2AIMEUIaYFHwFADQEAOw==') center no-repeat}
+        img.img-thumbnail{min-width:64px;min-height:64px;max-width:100%}
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script type="text/javascript">
+        var render = {
+            toggleSch: false,
+            toggleNav: false,
+            api: document.domain.match(/localhost|127.0.0.1/) ? '.' : 'https://jesus-christ.pages.dev',
+            timer: null,
+            // voice reader
+            stopped: true,
+            audio: new Audio(),
+            audioArray: [],
+            textArray: [],
+            nodes: [],
+            speechInstance: null,
+            offLine: false,
+            ttsApi: '',
+            playErrors: 0,
+            playErrorTimer: null,
+            voice: '',
+            // parameters
+            lang: 'zh-CN',
+            type: 'index',
+            slug: 'i',
+            p: 1,
+            q: '',
+            limit: 10,
+            site_url: '',
+            cdn_url: '',
+            // memory cache
+            cache: {},
+            init: function() {
+                window.addEventListener('hashchange', render.router, false);
+                window.addEventListener('load', render.router, false);
+            },
+
+            // hash router
+            router: function() {
+                var match = render.parseHash();
+                if (match.length) {
+                    render.lang = match[0];
+                    render.type = match[1];
+                    render.slug = match[2];
+                    render.p = parseInt(match[3] || 1);
+                    render.q = decodeURIComponent(match[4] || '');
+                    render.anchor = match[5] || '';
+                    render.setItem('multiBlogConfig', { lang: render.lang, type: render.type, slug: render.slug, p: render.p, q: encodeURIComponent(render.q), anchor: render.anchor });
+                    render.beforeSend();
+                    var t = new Date();
+                    var y = t.getFullYear() + '';
+                    var m = ('0' + (t.getMonth() + 1)).slice(-2);
+                    var d = ('0' + (t.getDate() + 1)).slice(-2); // +1 day
+                    if (render.cache[render.lang] && render.cache[render.lang].expires < new Date(y + '-' + m + '-' + d).getTime()) {
+                        render.success(render.cache[render.lang].datas);
+                    } else {
+                        render.ajax('GET', render.api + '/static/upload/json/' + (render.lang.match(/^zh-/) ? 'zh-CN' : render.lang) + '.json', { token: '' }, render.success, render.fail);
+                    }
+                } else {
+                    var config = render.getItem('multiBlogConfig') || {};
+                    render.lang = config.lang || navigator.language || navigator.userLanguage || 'zh-CN';
+                    render.type = config.type || 'index';
+                    render.slug = config.slug || 'i';
+                    render.p = parseInt(config.p || 1);
+                    render.q = decodeURIComponent(config.q || '');
+                    render.anchor = config.anchor || '';
+                    location.hash = '#'+ render.route();
+                }
+            },
+
+            // 本地存储
+            getItem: function (key, type) {
+                if (!type && typeof window.localStorage === 'undefined') return false;
+                if (!!type && typeof window.sessionStorage === 'undefined') return false;
+                var value = !type ? localStorage.getItem(key) : sessionStorage.getItem(key);
+                try {
+                    return JSON.parse(value)
+                } catch (e) {
+                    return value;
+                }
+            },
+            setItem: function (key, value, type) {
+                if (!type && typeof window.localStorage === 'undefined') return false;
+                if (!!type && typeof window.sessionStorage === 'undefined') return false;
+                try {
+                    if (typeof value === 'object') {
+                        value = JSON.stringify(value);
+                    }
+                    !type ? localStorage.setItem(key, value) : sessionStorage.setItem(key, value);
+                } catch (e) {
+                    return false;
+                }
+            },
+            removeItem: function (key, type) {
+                if (!type && typeof window.localStorage === 'undefined') return false;
+                if (!!type && typeof window.sessionStorage === 'undefined') return false;
+                try {
+                    !type ? localStorage.removeItem(key) : sessionStorage.removeItem(key);
+                } catch (e) {
+                    return false;
+                }
+            },
+
+            // combine route
+            route: function(lang, type, slug, p, q, anchor) {
+                var path = '';
+                var base = '';
+                if ((type || render.type) == 'index') base = '';
+                if (['category', 'tag', 'page'].indexOf((type || render.type)) !== -1) base = (type || render.type) + '/' + (slug || render.slug);
+                if ((type || render.type) == 'search') base = 'search';
+                if ((type || render.type) == 'detail') base = (slug || render.slug);
+                path += ((lang || render.lang) == 'zh-CN' ? '' : '/' + (lang || render.lang)) + '/' + base + ((p || render.p) == 1 ? '' : (base ? '/' : '') + 'page-' + (p || render.p));
+                path += ((p || render.p) == 1 && (type || render.type) == 'index' ? '' : '.html');
+                path += ((q !== undefined ? q : render.q) && (q !== undefined ? q : render.q).length > 0 ? '?q=' + (q !== undefined ? q : render.q) : '');
+                path += (anchor !== undefined ? anchor : render.anchor);
+                return path;
+            },
+
+            // parse hash
+            parseHash: function() {
+                var hash = location.hash.replace('#', '');
+                var lang = 'zh-CN';
+                var match;
+                if (match = hash.match(/^\/(co|gn|rw|ha|no|af|yo|en|gom|la|ne|fr|cs|haw|ka|ru|zh-CN|fa|bho|hi|be|sw|is|yi|ak|ga|gu|km|sk|iw|kn|hu|ta|ar|bn|az|sm|su|da|sn|bm|lt|vi|mt|tk|as|ca|si|ceb|gd|sa|pl|gl|lv|uk|tt|cy|ja|tl|ay|lo|te|ro|ht|doi|sv|mai|th|hy|my|ps|hmn|dv|zh-TW|lb|sd|ku|tr|mk|bg|ms|lg|mr|et|ml|de|sl|ur|pt|ig|ckb|om|el|es|fy|so|am|ny|pa|eu|it|sq|ko|tg|fi|ky|ee|hr|qu|bs|mi|or|ti|kk|nl|kri|ln|mg|mn|lus|xh|zu|sr|nso|st|eo|mni-Mtei|ug|uz|ilo|id|jw|ts)\//)) {
+                    lang = match[1];
+                    hash = hash.replace(new RegExp('^/'+ match[1] +'/'), '/');
+                }
+                var matches = [];
+                if (match = (hash.match(/^\/$/) || hash.match(/^\/page-(\d+).html$/))) {
+                    matches = [lang, 'index', 'i', match[1] ? parseInt(match[1]) : 1, '', ''];
+                } else if (match = (hash.match(/^\/(category|tag|page)\/([a-z0-9_-]+).html$/) || hash.match(/^\/(category|tag|page)\/([a-z0-9_-]+)\/page-(\d+).html$/))) {
+                    matches = [lang, match[1], match[2], match[3] ? parseInt(match[3]) : 1, '', '']
+                } else if (match = (hash.match(/^\/search.html\?q=([\s\S]*)$/) || hash.match(/^\/search\/page-(\d+).html\?q=([\s\S]*)$/))) {
+                    matches = [lang, 'search', 'i', match[2] == undefined ? 1 : parseInt(match[1]), match[2] == undefined ? match[1] : match[2], ''];
+                } else if (match = (hash.match(/^\/([a-z0-9_-]+).html$/) || hash.match(/^\/([a-z0-9_-]+).html(#\w.+)$/) || hash.match(/^\/([a-z0-9_-]+)\/page-(\d+).html$/))) {
+                    matches = [lang, 'detail', match[1], match[2] ? (match[2].match(/^\d+/) ? parseInt(match[2]) : 1) : 1, '', match[2] ? (match[2].match(/^#\w.+/) ? match[2] : '') : ''];
+                }
+                return matches;
+            },
+
+            // click event
+            click: function(e) {
+                // show search
+                if ((e.target.tagName === 'I' && e.target.className.match(/icon-search/)) || (e.target.tagName === 'A' && e.target.id === 'showsch')) {
+                    render.toggleSch = !render.toggleSch;
+                    if (render.toggleSch) {
+                        render.toggleNav = false;
+                        document.getElementById('nav') && (document.getElementById('nav').style.cssText = 'display: none;');
+                        document.getElementById('sch') && (document.getElementById('sch').style.cssText = 'display: block;');
+                        window.innerWidth > 380 && (document.getElementById('sch').style.right = (document.body.clientWidth - document.getElementById('header').offsetWidth) / 2 + 11 +'px');
+                    } else {
+                        document.getElementById('sch') && (document.getElementById('sch').style.cssText = 'display: none;');
+                    }
+                } else {
+                    var flag = false;
+                    var node = e.target;
+                    while(node) {
+                        if (node.id === 'sch') {
+                            flag = true;
+                            break;
+                        }
+                        node = node.parentNode;
+                    }
+                    if (!node) {
+                        render.toggleSch = false;
+                        document.getElementById('sch') && (document.getElementById('sch').style.cssText = 'display: none;');
+                    }
+                }
+                // show nav menu
+                if ((e.target.tagName === 'I' && e.target.className.match(/icon-tasks/)) || (e.target.tagName === 'A' && e.target.id === 'shownav')) {
+                    render.toggleNav = !render.toggleNav;
+                    if (render.toggleNav) {
+                        render.toggleSch = false;
+                        document.getElementById('sch') && (document.getElementById('sch').style.cssText = 'display: none;');
+                        document.getElementById('nav') && (document.getElementById('nav').style.cssText = 'display: block;');
+                        window.innerWidth > 380 && (document.getElementById('nav').style.right = (document.body.clientWidth - document.getElementById('header').offsetWidth) / 2 + 11 + 'px');
+                    } else {
+                        document.getElementById('nav') && (document.getElementById('nav').style.cssText = 'display: none;');
+                    }
+                } else {
+                    var flag = false;
+                    var node = e.target;
+                    while(node) {
+                        if (node.id === 'nav') {
+                            flag = true;
+                            break;
+                        }
+                        node = node.parentNode;
+                    }
+                    if (!node) {
+                        render.toggleNav = false;
+                        document.getElementById('nav') && (document.getElementById('nav').style.cssText = 'display: none;');
+                    }
+                }
+                // font zoom
+                if ((e.target.tagName === 'BUTTON' || e.target.tagName === 'I' || e.target.tagName === 'SUP') && (e.target.id === 'smaller' || e.target.parentNode.id === 'smaller' || e.target.id === 'bigger' || e.target.parentNode.id === 'bigger')) {
+                    render[e.target.id || e.target.parentNode.id]();
+                }
+                // voice reader
+                if ((e.target.tagName === 'BUTTON' || e.target.tagName === 'I') && (e.target.id === 'btn-play' || e.target.id === 'btn-pause' || e.target.id === 'btn-stop' || e.target.id === 'btn-top' || e.target.parentNode.id === 'btn-play' || e.target.parentNode.id === 'btn-pause' || e.target.parentNode.id === 'btn-stop' || e.target.parentNode.id === 'btn-top')) {
+                    !e.target.disabled && !e.target.parentNode.disabled && render[(e.target.id || e.target.parentNode.id).slice(4)]();
+                }
+                // favorite
+                ((e.target.tagName === 'A' || e.target.tagName === 'I') && (e.target.id === 'btn-favorite' || e.target.parentNode.id === 'btn-favorite')) && render.favorite();
+                // language
+                if ((e.target.tagName === 'DD' || e.target.tagName === 'A') && (e.target.id === 'en' || e.target.parentNode.id === 'en' || e.target.id.match(/^zh-(CN|TW)$/) || e.target.parentNode.id.match(/^zh-(CN|TW)$/))) {
+                    location.hash = '#'+ render.route(e.target.id || e.target.parentNode.id);
+                }
+                // to top
+                e.target.tagName === 'A' && e.target.id === 'top' && render.top();
+            },
+
+            // change event
+            change: function(e) {
+                // Language select
+                if (e.target.tagName === 'SELECT' && e.target.id === 'lang') {
+                    location.hash = '#'+ render.route(e.target.value);
+                }
+                // pageNum jumpTo
+                if (e.target.tagName === 'SELECT' && e.target.id === 'jumpTo') {
+                    location.hash = '#'+ render.route(render.lang, render.type, render.slug, parseInt(e.target.options[e.target.selectedIndex].value || 1), render.q, '');
+                }
+            },
+
+            // keyup event
+            keyup: function(e) {
+                // search result
+                if (e.target.tagName === 'INPUT' && e.target.id === 'search-text' && e.keyCode === 13) {
+                    var q = document.getElementById('search-text').value.trim();
+                    if (!q.length) return false;
+                    location.hash = '#'+ render.route(render.lang, 'search', 'i', 1, q, '');
+                }
+            },
+
+            // scroll event
+            scroll: function(e) {
+                if (render.timer) return false;
+                render.timer = setTimeout(function() {
+                    var clientHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+                    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                    // lazyload images
+                    var imgs = document.getElementsByTagName('img');
+                    for (var i = 0; i < imgs.length; i++) {
+                        var pos = 0;
+                        var img = imgs[i];
+                        var elem = imgs[i];
+                        while (elem) {
+                            pos += elem.offsetTop;
+                            elem = elem.offsetParent;
+                        }
+                        if (pos < clientHeight + scrollTop && img.src.match(/^data:image/) && img.getAttribute("data-src")) {
+                            img.src = img.getAttribute('data-src');
+                        }
+                    }
+                    // side to top
+                    var cssText = '';
+                    var posText = 'right:'+ (window.innerWidth > 992 ? (document.body.clientWidth - document.getElementById('contentwrap').offsetWidth) / 2 - 40 : '10') + 'px;';
+                    document.getElementById('btn-top') && (document.getElementById('btn-top').style.cssText = posText);
+                    if (scrollTop > 300) {
+                        cssText = 'position:fixed;'+ posText + 'opacity:.7;';
+                        document.getElementById('btn-play') && (document.getElementById('btn-play').style.cssText = cssText + 'bottom:60px;');
+                        document.getElementById('btn-pause') && (document.getElementById('btn-pause').style.cssText = cssText + 'bottom:60px;');
+                        document.getElementById('btn-top') && (document.getElementById('btn-top').className = 'visible');
+                    } else {
+                        cssText = 'position:static;';
+                        document.getElementById('btn-play') && (document.getElementById('btn-play').style.cssText = cssText);
+                        document.getElementById('btn-pause') && (document.getElementById('btn-pause').style.cssText = cssText);
+                        document.getElementById('btn-top') && (document.getElementById('btn-top').className = 'invisible');
+                    }
+                    clearTimeout(render.timer);
+                    render.timer = null;
+                }, 500);
+            },
+
+            // before send ajax
+            beforeSend: function() {
+                // reset vars
+                render.stop();
+                render.stopped = true;
+                render.audio = new Audio();
+                render.audioArray = [];
+                render.textArray = [];
+                render.nodes = [];
+                render.speechInstance = null;
+                render.offLine = false;
+                render.ttsApi = '';
+                render.playErrors = 0;
+                render.playErrorTimer = null;
+                render.timer = null;
+                render.voice = '';
+                render.toggleSch = false;
+                render.toggleNav = false;
+                document.getElementsByTagName('html')[0].setAttribute('lang', render.lang);
+                document.getElementById('sch') && (document.getElementById('sch').style.cssText = 'display: none;');
+                document.getElementById('nav') && (document.getElementById('nav').style.cssText = 'display: none;');
+                document.getElementById('app').insertAdjacentHTML('afterbegin', render.loader());
+                // unbind events
+                window.removeEventListener('click', render.click, false);
+                window.removeEventListener('change', render.change, false);
+                window.removeEventListener('keyup', render.keyup, false);
+                window.removeEventListener('scroll', render.scroll, false);
+            },
+
+            // Route to page
+            success: function(res) {
+                if (!res || res.code) return render.err404(res);
+                render.site_url = document.domain.match(/localhost|127.0.0.1/i) ? '.' : (res.data.setting.site ? res.data.setting.site : res.data.site_url);
+                render.cdn_url = document.domain.match(/localhost|127.0.0.1/i) ? '.' : (res.data.setting.static ? res.data.setting.static : render.site_url);
+                document.title = render.title(res.data);
+                var links = document.head.getElementsByTagName('link');
+                for (var i = 0; i < links.length; i++) {
+                    var rel = (links[i].getAttribute('rel') || '').toLowerCase();
+                    if (rel.match(/(?:shortcut\s+)?icon/)) {
+                        if (res.data.setting.webLogo) links[i].href = res.data.setting.webLogo.replace(/^.*?(\/static\/.+)$/i, render.cdn_url + '$1');
+                    }
+                }
+                render.voice = res.data.voice || '';
+                var arr = [];
+                arr.push(render.header(res.data));
+                arr.push(render.main(res.data));
+                arr.push(render.footer(res.data));
+                arr.push(render.sch(res.data));
+                arr.push(render.nav(res.data));
+                document.getElementById('app').innerHTML = arr.join('\n');
+                if (location.hash.replace(/#/, '').indexOf('#') !== -1) {
+                    render.sanitize(res.data);
+                } else render.top(function() {
+                    render.sanitize(res.data);
+                });
+            },
+
+            // err404
+            err404: function(res) {
+                if (res && res.code) {
+                    document.getElementById('app').innerHTML = render.info('Error', res.msg);
+                } else {
+                    return render.info();
+                }
+            },
+
+            // header
+            header: function(data) {
+                var arr = [];
+                arr.push('<div id="headerwrap">\n');
+                arr.push('\t<div id="header">\n');
+                arr.push('\t\t<h1>'+ (data.setting.webLogo ? '<a href="#'+ render.route(render.lang, 'index', 'i', 1, '', '') +'"><img src="'+ data.setting.webLogo.replace(/^.*?(\/static\/.+)$/i, render.cdn_url + '$1') +'" /></a>' : '') +'<a href="#'+ render.route(render.lang, 'index', 'i', 1, '', '') +'">'+ data.setting.webName +'</a></h1>\n');
+                arr.push('\t\t<ul id="top-nav">\n');
+                arr.push('\t\t\t<li><a id="shownav" href="javascript:;" title="Nav menu"><i class="icon icon-white icon-tasks"></i></a></li>\n');
+                arr.push('\t\t\t<li><a id="showsch" href="javascript:;" title="Search"><i class="icon icon-white icon-search"></i></a></li>\n');
+                arr.push('\t\t</ul>\n');
+                arr.push('\t\t<div class="cl"></div>\n');
+                arr.push('\t</div>\n');
+                arr.push('</div>\n');
+                return arr.join('');
+            },
+
+            // main
+            main: function(data) {
+                var arr = [];
+                arr.push('<div id="contentwrap">\n');
+                render.type != 'index' && arr.push('\t<div id="title">'+ render.crumbs(data).map(function(item, i) {
+                    return item.link == undefined ? item.name : '<a href="#'+ item.link +'" title="'+ item.name +'">'+ item.name +'</a>';
+                }).join(' > ') +'</div>\n');
+                if (['index', 'search'].indexOf(render.type) !== -1 && render.slug != 'i') {
+                    arr.push(render.err404(data));
+                } else {
+                    if (render.type == 'detail' || render.type == 'page') {
+                        arr.push(render[render.type](data));
+                    } else {
+                        arr.push(render.archive(data));
+                    }
+                }
+                arr.push('</div>\n');
+                return arr.join('');
+            },
+
+            // footer
+            footer: function(data) {
+                var arr = [];
+                var t = new Date().getFullYear();
+                arr.push('<div id="footerwrap" class="position">\n');
+                arr.push('\t<div id="footer">\n');
+                if (data.links.length) {
+                    arr.push('\t\t<p>\n');
+                    arr.push('\t\t\t<a href="'+ render.site_url + render.route(render.lang, 'index', 'i', 1, '', '') +'" title="'+ data.setting.webName +'">'+ data.setting.webName +'</a>');
+                    data.links.forEach(function(item, i) {
+                        arr.push('&nbsp;-&nbsp;<a href="'+ item.url +'" title="'+ item.name +'">'+ item.name +'</a>');
+                    });
+                    arr.push('\t\t</p>\n');
+                }
+                arr.push('\t\t<p><a href="javascript:;" title="Top" id="top">↑Top</a> | <a href="'+ render.site_url + render.route() +'" title="Desktop view">Desktop view</a></p>\n');
+                arr.push('\t\t<p>&copy; 2024'+ (t > 2024 ? ' - '+ t : '') +'</p>\n');
+                arr.push('\t\t<button id="btn-top" class="invisible" type="button"><i class="icon icon-chevron-up muted"></i></button>\n')
+                arr.push('\t</div>\n');
+                arr.push('</div>\n');
+                return arr.join('');
+            },
+
+            // search
+            sch: function(data) {
+                var arr = [];
+                arr.push('<div id="sch">\n');
+                // search text
+                arr.push('\t<dl>\n');
+                arr.push('\t\t<dt><input id="search-text" type="text" placeholder="Search ..." value="'+ render.q +'" /><i class="zoom icon icon-search muted"></i></dt>\n');
+                arr.push('\t</dl>\n');
+                arr.push('\t<div class="cl"></div>\n');
+                // tags
+                if (data.tags.length) {
+                    arr.push('\t<dl>\n');
+                    arr.push('\t\t<dt>\n');
+                    data.tags.forEach(function (item, i) {
+                        arr.push('\t\t\t<a href="#' + render.route(render.lang, 'tag', item.slug, 1, '', '') + '" title="' + item.name + ' (' + item.num + ' ' + (data.localize && data.localize.articles ? data.localize.articles : 'articles') + ')"'+ ('tag' == render.type && item.slug == render.slug ? ' class="active"' : '') +' rel="nofollow">' + item.name + '(' + item.num + ')</a>\n');
+                    });
+                    arr.push('\t\t</dt>\n');
+                    arr.push('\t</dl>\n');
+                    arr.push('\t<div class="cl"></div>\n');
+                }
+                arr.push('</div>\n');
+                return arr.join('');
+            },
+
+            // nav menu
+            nav: function(data) {
+                var arr = [];
+                var datas = [];
+                arr.push('<div id="nav">\n');
+                // Categories
+                datas = render.levels(data.categories, 0, 0);
+                if (datas.length) {
+                    arr.push('\t<dl>\n');
+                    datas.forEach(function(el, i) {
+                        if (el.children.length) {
+                            arr.push('\t\t<dt>'+ el.name +'</dt>\n');
+                            el.children.forEach(function(ele, j) {
+                                arr.push('\t\t<dd><a href="#'+ render.route(render.lang, 'category', ele.slug, 1, '', '') +'" title="'+ ele.name +'"'+ ('category' == render.type && ele.slug == render.slug ? ' class="active"' : '') +'>'+ ele.name +'</a></dd>\n');
+                            });
+                        } else {
+                            arr.push('\t\t<dt><a href="#'+ render.route(render.lang, 'category', el.slug, 1, '', '') +'" title="'+ el.name +'"'+ ('category' == render.type && el.slug == render.slug ? ' class="active"' : '') +'>'+ el.name +'</a></dt>\n');
+                        }
+                    });
+                    arr.push('\t</dl>\n');
+                    arr.push('\t<div class="cl"></div>\n');
+                }
+                // Pages
+                datas = render.levels(data.pages.filter(function(el, i) {
+                    return el.is_nav == 0;
+                }), 0, 0);
+                if (datas.length) {
+                    arr.push('\t<dl>\n');
+                    datas.forEach(function(el, i) {
+                        if (el.children.length) {
+                            arr.push('\t\t<dt>'+ el.title +'</dt>\n');
+                            el.children.forEach(function(ele, j) {
+                                arr.push('\t\t<dd><a href="#'+ render.route(render.lang, 'page', ele.slug, 1, '', '') +'" title="'+ ele.title +'"'+ ('page' == render.type && ele.slug == render.slug ? ' class="active"' : '') +'>'+ ele.title +'</a></dd>\n');
+                            });
+                        } else {
+                            arr.push('\t\t<dt><a href="#'+ render.route(render.lang, 'page', el.slug, 1, '', '') +'" title="'+ el.title +'"'+ ('page' == render.type && el.slug == render.slug ? ' class="active"' : '') +'>'+ el.title +'</a></dt>\n');
+                        }
+                    });
+                    arr.push('\t</dl>\n');
+                    arr.push('\t<div class="cl"></div>\n');
+                }
+                // Languages
+                if (data.langs && data.langs.length) {
+                    arr.push('\t<dl>\n');
+                    arr.push('\t\t<dt>'+ (data.localize && data.localize.language ? data.localize.language : 'Languages') +'</dt>\n');
+                    arr.push('\t\t<dd id="en"><a href="javascript:;" title="English"'+ (render.lang == 'en' ? ' class="active"' : '') +'>English</a></dd>\n');
+                    arr.push('\t\t<dd id="zh-CN" class="ignore"><a href="javascript:;" title="简体中文"'+ (render.lang == 'zh-CN' ? ' class="active"' : '') +'>简体中文</a></dd>\n');
+                    arr.push('\t\t<dd id="zh-TW"><a href="javascript:;" title="繁體中文"'+ (render.lang == 'zh-TW' ? ' class="active"' : '') +'>繁體中文</a></dd>\n');
+                    arr.push('\t</dl>\n');
+                    arr.push('\t<div class="cl"></div>\n');
+                    arr.push('\t<dl>\n');
+                    arr.push('\t\t<dd>\n');
+                    arr.push('\t\t\t<select id="lang">\n');
+                    data.langs.forEach(function(item, i) {
+                        arr.push('\t\t<option value="'+ item.slug +'"'+ (item.slug === render.lang ? ' selected="selected"' : '') +'>'+ item.title +' ('+ item.name +')</option>\n');
+                    });
+                    arr.push('\t\t\t</select>\n');
+                    arr.push('\t\t</dd>\n');
+                    arr.push('\t</dl>\n');
+                    arr.push('\t<div class="cl"></div>\n');
+                }
+                arr.push('</div>\n');
+                return arr.join('');
+            },
+
+            // title
+            title: function(data) {
+                var parent = [];
+                // category
+                if (render.type == 'category') {
+                    var items = data.categories.filter(function(item, i) {
+                        return item.slug == render.slug;
+                    });
+                    if (items.length) parent = render.parents(data.categories, items[0].id);
+                }
+                // tag
+                if (render.type == 'tag') {
+                    var items = data.tags.filter(function(item, i) {
+                        return item.slug == render.slug;
+                    });
+                    if (items.length) parent.push(items[0]);
+                }
+                // search
+                if (render.type == 'search' && render.slug == 'i') {
+                    parent.unshift({ name: data.localize && data.localize.search_result ? data.localize.search_result : 'Search result' });
+                }
+                // detail
+                if (render.type == 'detail') {
+                    var items = data.articles.filter(function(item, i) {
+                        return item.slug == render.slug;
+                    });
+                    if (items.length) parent.unshift(items[0]);
+                }                
+                // page
+                if (render.type == 'page') {
+                    var items = data.pages.filter(function(item, i) {
+                        return item.slug == render.slug;
+                    });
+                    if (items.length) parent = render.parents(data.pages, items[0].id);
+                }
+                // page 404
+                if (render.type !== 'index' && render.slug !== 'i' && parent.length == 0) {
+                    parent.unshift({ name: 'Page not found' });
+                }
+                // Home page
+                parent.push({ name: data.setting.webName });
+                parent = parent.map(function(item, i) {
+                    return (item.name || item.title).replace(/<[^>]*>/g, ' ');
+                });
+                return parent.join(' - ');
+            },
+
+            // crumbs
+            crumbs: function(data) {
+                var parent = [];
+                // index
+                if (render.type == 'index' && render.slug == 'i') {
+                    parent.unshift({ name: data.setting.webName });
+                }
+                // category
+                if (render.type == 'category') {
+                    var items = data.categories.filter(function(item, i) {
+                        return item.slug == render.slug;
+                    });
+                    if (items.length) {
+                        parent = render.parents(data.categories, items[0].id);
+                        parent.shift();
+                        parent.unshift({ name: items[0].name });
+                    }
+                }
+                // tag
+                if (render.type == 'tag') {
+                    var items = data.tags.filter(function(item, i) {
+                        return item.slug == render.slug;
+                    });
+                    if (items.length) {
+                        parent.push(items[0]);
+                        parent.shift();
+                        parent.unshift({ name: items[0].name });
+                    }
+                }
+                // search
+                if (render.type == 'search' && render.slug == 'i') {
+                    parent.unshift({ name: data.localize && data.localize.search_result ? data.localize.search_result : 'Search result' });
+                }
+                // detail
+                if (render.type == 'detail') {
+                    var items = data.articles.filter(function(item, i) {
+                        return item.slug == render.slug;
+                    });
+                    if (items.length) {
+                        parent = render.parents(data.categories, items[0].category_id);
+                        parent.unshift({ name: items[0].title });
+                    }
+                }                
+                // page
+                if (render.type == 'page') {
+                    var items = data.pages.filter(function(item, i) {
+                        return item.slug == render.slug;
+                    });
+                    if (items.length) {
+                        parent = render.parents(data.pages, items[0].id);
+                        parent.shift();
+                        parent.unshift({ name: items[0].title });
+                    }
+                }
+                // add link
+                parent.forEach(function(item, i) {
+                    if (item.slug) item.link = render.route(render.lang, render.type == 'detail' ? 'category' : render.type, item.slug, 1, '', '');
+                    if (item.title) item.name = (item.name || item.title).replace(/<[^>]*>/g, ' ');
+                });
+                // page 404
+                if (render.type !== 'index' && render.slug !== 'i' && parent.length == 0) {
+                    parent.unshift({ name: 'Page not found' });
+                }
+                // breadcrumbs
+                parent.push({ name: data.localize && data.localize.home ? data.localize.home : 'Home', link: render.route(render.lang, 'index', 'i', 1, '', '') });
+                return parent.reverse();
+            },
+
+            // detail
+            detail: function(data) {
+                var article = data.articles.filter(function(item, i) {
+                    return item.slug == render.slug;
+                })[0];
+                var arr = [];
+                if (article) {
+                    var t = new Date(article.create_at * 1000);
+                    var y = t.getFullYear() + '';
+                    var m = ('0' + (t.getMonth() + 1)).slice(-2);
+                    var d = ('0' + t.getDate()).slice(-2);
+                    var category = data.categories.filter(function(item, i) {
+                        return item.id == article.category_id;
+                    })[0];
+                    arr.push('<div class="post single-post">\n');
+                    arr.push('\t<h2>'+ article.title +'</h2>\n');
+                    arr.push('\t<div class="subtitle">\n');
+                    arr.push('\t\t<div class="fl">\n');
+                    arr.push('\t\t\t<i class="icon icon-time muted"></i> '+ (m +'/'+ d +'/'+ y.slice(2)) +' &nbsp;\n');
+                    arr.push('\t\t\t<i class="icon icon-eye-open muted"></i> '+ article.views +' &nbsp;\n');
+                    arr.push('\t\t</div>\n');
+                    arr.push('\t\t<div class="fr">\n');
+                    arr.push('\t\t\t<i class="icon icon-folder-open muted"></i> '+ (category ? '<a href="#'+ render.route(render.lang, 'category', category.slug, 1, '', '') +'" title="'+ category.name.replace(/<[^>]*>/g, ' ') +'">'+ category.name +'</a>' : (data.localize && data.localize.uncategoried ? data.localize.uncategoried : 'Uncategoried')) + '&nbsp;\n');
+                    arr.push('\t\t</div>\n');
+                    arr.push('\t<div class="cl"></div>\n');
+                    arr.push('\t</div>\n');
+                    arr.push('\t<div class="fl">\n');
+                    arr.push('\t\t<button id="btn-headphones" type="button"><i class="icon icon-headphones muted"></i></button>\n');
+                    arr.push('\t\t<button id="btn-play" type="button"'+ (!data.voice ? ' disabled="disabled" style="cursor:not-allowed"' : '') +'><i class="icon icon-play muted"></i></button>\n');
+                    arr.push('\t\t<button id="btn-pause" class="invisible" type="button"><i class="icon icon-pause muted"></i></button>\n');
+                    arr.push('\t\t<button id="btn-stop" class="invisible" type="button"><i class="icon icon-stop muted"></i></button>&nbsp;\n');
+                    arr.push('\t</div>\n');
+                    arr.push('\t<div class="fr muted">\n');
+                    arr.push('\t\t<button id="bigger"><i class="icon icon-font"></i><sup>+</sup></button>\n');
+                    arr.push('\t\t<button id="smaller"><i class="icon icon-font"></i><sup>-</sup></button>&nbsp;\n');
+                    arr.push('\t</div>\n');
+                    arr.push('\t<div class="cl"></div>\n');
+                    arr.push('\t<p id="spinner"></p>\n');
+                    arr.push('\t<div id="entry-content">'+ article.content.replace(/<img[^>]*src=(["'])([^"']+)(["'])[^>]*>/gi, function(match, p1, p2, p3) {
+                        return '<img src='+ p1 + 'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==' + p3 +' data-src='+ p1 + p2.replace(/^.*?(\/static\/.+)$/i, render.cdn_url + '$1') + p3 +' class='+ p1 + 'img-thumbnail' + p3 +' alt='+ p1 + article.title.replace(/<[^>]*>/g, ' ') + p3 +' title='+ p1 + article.title.replace(/<[^>]*>/g, ' ') + p3 +' />';
+                    }) +'</div>\n');
+                    // related posts
+                    var tag_ids = JSON.parse(article.tag_ids || '[]');
+                    if (tag_ids.length) {
+                        var related = data.articles.filter(function(item, i) {
+                            var rel_ids = JSON.parse(item.tag_ids || '[]');
+                            var condition = item.id != article.id;
+                            for (i = 0; i < tag_ids.length; i++) {
+                                condition = condition && rel_ids.indexOf(tag_ids[i]) !== -1;
+                            }
+                            return condition;
+                        }).slice(0, data.setting.related_num);
+                        if (related.length) {
+                            arr.push('\t<div class="related-posts">\n');
+                            arr.push('\t\t<h3 class="related-title">'+ (data.localize && data.localize.related_articles ? data.localize.related_articles : 'Related posts') +':</h3>\n');
+                            arr.push('\t\t<ul class="related-items">\n');
+                            related.forEach(function(item, i) {
+                                arr.push('\t\t\t<li class="related-item"><a href="#'+ render.route(render.lang, 'detail', item.slug, 1, '', '') +'" title="'+ item.title.replace(/<[^>]*>/g, ' ') +'">'+ item.title +'</a></li>\n');
+                            });
+                            arr.push('\t\t</ul>\n');
+                            arr.push('\t</div>\n');
+                        }
+                    }
+                    // favorites
+                    arr.push('\t\t<div class="favorites muted">')
+                    arr.push('\t\t\t<a id="btn-favorite" class="btn-favorite" data-id="'+ article.id +'" data-store="'+ (data.langs && data.langs.length ? 'multiPostFavorites' : 'postFavorites') +'" data-lang="'+ (render.lang ? render.lang : 'zh-CN') +'" data-favorite="'+ (data.localize && data.localize.favorite_article ? data.localize.favorite_article : 'Add favorite') +'" data-cancel="'+ (data.localize && data.localize.favorite_cancel ? data.localize.favorite_cancel : 'Cancel favorite') +'" data-success="'+ (data.localize && data.localize.favorite_success ? data.localize.favorite_success : 'Favorite success') +'" href="javascript:;" title="'+ (data.localize && data.localize.favorite_article ? data.localize.favorite_article : 'Add favorite') +'"><i id="icon-favorite" class="icon icon-star-empty"></i></a>\n');
+                    arr.push('\t\t\t<br />\n');
+                    arr.push('\t\t\t<i class="icon icon-heart muted"></i> <span id="post-favorites">0</span> ' + (data.localize && data.localize.articles ? data.localize.articles : 'Articles') + '\n');
+                    arr.push('\t\t</div>');
+                    // prev next post
+                    var prev = null;
+                    var next = null;
+                    for (var i = 0; i < data.articles.length; i++) {
+                        if (data.articles[i].id == article.id) {
+                            if (i > 1) {
+                                prev = data.articles[i - 1];
+                            }
+                            if (i + 1 < data.articles.length) {
+                                next = data.articles[i + 1];
+                            }
+                            break;
+                        }
+                    }
+                    arr.push('\t<p><a href="'+ (next ? '#'+ render.route(render.lang, 'detail', next.slug, 1, '', '') : 'javascript:;') +'" class="pn fl"'+ (next ? '' : ' style="cursor:not-allowed"') +'>&larr; '+ (next ? 'Older' : (data.localize && data.localize.nothing ? data.localize.nothing : '没有了')) +'</a><a href="'+ (prev ? '#'+ render.route(render.lang, 'detail', prev.slug, 1, '', '') : 'javascript:;') +'" class="pn fr"'+ (prev ? '' : ' style="cursor:not-allowed"') +'>&rarr; '+ (prev ? 'Newer' : (data.localize && data.localize.nothing ? data.localize.nothing : '没有了')) +'</a></p>\n');
+                    arr.push('\t<div class="cl"></div>\n');
+                    // post tags
+                    if (tag_ids.length) {
+                        arr.push('\t<p class="subtitle post-tag">\n');
+                        arr.push('\t\t<i class="icon icon-tags"></i> &nbsp;');
+                        data.tags.filter(function(el) {
+                            return tag_ids.map(function(ele) {
+                                return parseInt(ele);
+                            }).indexOf(el.id) !== -1;
+                        }).forEach(function(item, i) {
+                            arr.push((i > 0 ? ', ' : '') + '<a href="#'+ render.route(render.lang, 'tag', item.slug, 1, '', '') +'" title="'+ item.name +'">'+ item.name +'</a>');
+                        });
+                        arr.push('\t</p>\n');
+                    }
+                    arr.push('</div>\n');
+                    // comments
+                    var comments = render.levels(data.comments.filter(function(item, i) {
+                        return item.article_id == article.id;
+                    }), 0, 0);
+                    if (comments.length) {
+                        arr.push('<div class="comments" id="loop">\n');
+                        document.getElementById('loop') && render.type == 'detail' && render.p > 1 && arr.push(document.getElementById('loop').innerHTML);
+                        var user = render.format(data.users, 'username');
+                        comments.slice((render.p - 1) * render.limit, render.p * render.limit).forEach(function(item, i) {
+                            var t = new Date(item.time * 1000);
+                            var y = t.getFullYear() + '';
+                            var m = ('0' + (t.getMonth() + 1)).slice(-2);
+                            var d = ('0' + t.getDate()).slice(-2);
+                            arr.push('\t<div class="post">\n');
+                            arr.push('\t\t<p><cite>'+ (user[item.author] ? user[item.author]['nickname'] : (data.localize && data.localize[item.author] ? data.localize[item.author] : item.author)) +'</cite> '+ (data.localize && data.localize.say ? data.localize.say : 'says') +':</p>\n');
+                            arr.push('\t\t'+ item.comment.replace(/<img[^>]*src=(["'])([^"']+)(["'])[^>]*>/gi, function(match, p1, p2, p3) {
+                                return '<img src='+ p1 + 'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==' + p3 +' data-src='+ p1 + p2.replace(/^.*?(\/static\/.+)$/i, render.cdn_url + '$1') + p3 +' class='+ p1 + 'img-thumbnail' + p3 +' alt='+ p1 + article.title.replace(/<[^>]*>/g, ' ') + p3 +' title='+ p1 + article.title.replace(/<[^>]*>/g, ' ') + p3 +' />';
+                            }) +'\n');
+                            arr.push('\t\t<p class="singleline commentfoot">Posted on time '+ (m +'/'+ d +'/'+ y.slice(2)) +'</p>\n');
+                            arr.push('\t</div>\n');
+                            // reply comments
+                            item.children.forEach(function (reply, i) {
+                                var t = new Date(reply.time * 1000);
+                                var y = t.getFullYear() + '';
+                                var m = ('0' + (t.getMonth() + 1)).slice(-2);
+                                var d = ('0' + t.getDate()).slice(-2);
+                                arr.push('\t<div class="post" style="padding-left:32px">\n');
+                                arr.push('\t\t<p><cite>'+ (user[reply.author] ? user[reply.author]['nickname'] : (data.localize && data.localize[reply.author] ? data.localize[reply.author] : reply.author)) +'</cite> '+ (data.localize && data.localize.reply ? data.localize.reply : 'reply') +':</p>\n');
+                                arr.push('\t\t'+ reply.comment.replace(/<img[^>]*src=(["'])([^"']+)(["'])[^>]*>/gi, function(match, p1, p2, p3) {
+                                    return '<img src='+ p1 + 'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==' + p3 +' data-src='+ p1 + p2.replace(/^.*?(\/static\/.+)$/i, render.cdn_url + '$1') + p3 +' class='+ p1 + 'img-thumbnail' + p3 +' alt='+ p1 + article.title.replace(/<[^>]*>/g, ' ') + p3 +' title='+ p1 + article.title.replace(/<[^>]*>/g, ' ') + p3 +' />';
+                                }) +'\n');
+                                arr.push('\t\t<p class="singleline commentfoot">Posted on time '+ (m +'/'+ d +'/'+ y.slice(2)) +'</p>\n');
+                                arr.push('\t</div>\n');
+                            });
+                        });
+                        arr.push('</div>\n');
+                        // next comment pager
+                        var total = Math.max(Math.ceil(comments.length / render.limit), 1);
+                        var next = Math.min(render.p + 1, total);
+                        arr.push('<div id="more" class="position">\n');
+                        if (next == total) {
+                            arr.push('\t<a href="javascript:;" title="Reached end" style="cursor:not-allowed">Reached end</a>\n');
+                        } else {
+                            arr.push('\t<a href="#'+ render.route(render.lang, 'detail', article.slug, next, '', '#comments') +'" title="Next page">Next</a>\n');
+                        }
+                        arr.push('</div>\n');
+                    } else {
+                        arr.push('<div id="comments">\n');
+                        arr.push('\t<div id="respond">\n');
+                        arr.push('\t\t<a href="javascript:;" title="Reached end" style="cursor:not-allowed">Reached end</a>\n');
+                        arr.push('\t</div>\n');
+                        arr.push('</div>\n');
+                    }
+                } else {
+                    arr.push(render.info('No posts', 'There have no post content'));
+                }
+                return arr.join('');
+            },
+
+            // archive
+            archive: function(data) {
+                var items = [];
+                var articles = [];
+                // index
+                if (render.type == 'index') {
+                    articles = data.articles;
+                }
+                // categories
+                if (render.type == 'category') {
+                    items = data.categories.filter(function(item, i) {
+                        return item.slug == render.slug;
+                    });
+                    if (items.length) {
+                        cat_ids = render.trees(data.categories, items[0].id, 0).map(function(item, i) {
+                            return item.id;
+                        });
+                        cat_ids.unshift(items[0].id);
+                        articles = data.articles.filter(function(item, i) {
+                            return cat_ids.indexOf(item.category_id) !== -1;
+                        });
+                    }
+                }
+                // tags
+                if (render.type == 'tag') {
+                    items = data.tags.filter(function(item, i) {
+                        return item.slug == render.slug;
+                    });
+                    if (items.length) {
+                        articles = data.articles.filter(function(item, i) {
+                            var tag_ids = JSON.parse(item.tag_ids || '[]').map(function(item, i) {
+                                return parseInt(item);
+                            });
+                            return tag_ids.indexOf(items[0].id) !== -1;
+                        });
+                    }
+                }
+                // search
+                if (render.type == 'search') {
+                    if (render.q) {
+                        articles = data.articles.filter(function(item, i) {
+                            return item.title.match(new RegExp(render.q, 'i'));
+                        });
+                    }
+                }
+                // print
+                var arr = [];
+                if (articles.length) {
+                    arr.push('<div id="loop" class="archive">\n');
+                    if (render.type == 'category' && items.length && items[0].is_gallery == '1') {
+                        arr.push(render.list_gallery(articles.slice((render.p - 1) * render.limit, render.p * render.limit)));
+                    } else {
+                        arr.push(render.list_item(articles.slice((render.p - 1) * render.limit, render.p * render.limit)));
+                    }
+                    arr.push('</div>\n');
+                    arr.push(render.pager(articles.length));
+                } else {
+                    arr.push(render.info('No posts', 'There have no posts' + (render.type == 'search' ? ' search for "'+ render.q +'"' : '')));
+                }
+                return arr.join('');
+            },
+
+            // page
+            page: function(data) {
+                var arr = [];
+                var page = data.pages.filter(function(item, i) {
+                    return item.slug == render.slug;
+                })[0];
+                if (page) {
+                    var childs = render.trees(data.pages, page.id, 0);
+                    // child pages
+                    if (childs.length) {
+                        arr.push('<div id="loop" class="archive">\n');
+                        arr.push(render.list_page(childs.slice((render.p - 1) * render.limit, render.p * render.limit)));
+                        arr.push('</div>\n');
+                        arr.push(render.pager(childs.length));
+                    } else if (page.slug.match(/^page-/) && render[page.slug.replace('-', '_')]) {
+                        arr.push(render[page.slug.replace('-', '_')](data));
+                    } else {
+                        arr.push('<div class="post">\n');
+                        arr.push('\t'+ page.content.replace(/<img[^>]*src=(["'])([^"']+)(["'])[^>]*>/gi, function(match, p1, p2, p3) {
+                            return '<img src='+ p1 + 'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==' + p3 +' data-src='+ p1 + p2.replace(/^.*?(\/static\/.+)$/i, render.cdn_url + '$1') + p3 +' class='+ p1 + 'img-thumbnail' + p3 +' alt='+ p1 + page.title.replace(/<[^>]*>/g, ' ') + p3 +' title='+ p1 + page.title.replace(/<[^>]*>/g, ' ') + p3 +' />';
+                        }) +'\n');
+                        arr.push('</div>\n');
+                    }
+                } else {
+                    arr.push(render.info('No page', 'There have no page content'));
+                }
+                return arr.join('');
+            },
+
+            // page favorites
+            page_favorites: function (data) {
+                var arr = [];
+                arr.push('<div id="loop" class="archive" data-slug="page-favorites">\n');
+                arr.push('\t<div id="loading" class="muted"><i class="icon icon-loading"></i> Loading...</div>\n');
+                arr.push('</div>\n');
+                return arr.join('');
+            },
+
+            // page likes
+            page_likes: function (data) {
+                var arr = [];
+                arr.push('<div id="loop" class="archive" data-slug="page-likes">\n');
+                arr.push('\t<div id="loading" class="muted"><i class="icon icon-loading"></i> Loading...</div>\n');
+                arr.push('</div>\n');
+                return arr.join('');
+            },
+
+            // list item
+            list_item: function(list) {
+                var arr = [];
+                if (list.length) {
+                    list.forEach(function(item, i) {
+                        var t = new Date(item.create_at * 1000);
+                        var y = t.getFullYear() + '';
+                        var m = ('0' + (t.getMonth() + 1)).slice(-2);
+                        var d = ('0' + t.getDate()).slice(-2);
+                        var match = item.content.match(/<img[^>]*src=["']([^"']*)["'][^>]*>/i);
+                        item.cover = (item.cover || (match ? match[1] : '')).replace(/^.*?(\/static\/.+)$/i, render.cdn_url + '$1');
+                        arr.push('\t<div class="post">\n');
+                        arr.push('\t\t<a href="#'+ render.route(render.lang, 'detail', item.slug, 1, '', '') +'" title="'+ item.title.replace(/<[^>]*>/g, ' ') +'">\n');
+                        arr.push('\t\t\t<h2 class="title">'+ (render.type == 'search' && render.q ? item.title.replace(new RegExp(render.q, 'gi'), '<span style="color:orangered">'+ render.q +'</span>') : item.title) +'</h2>\n');
+                        item.cover && arr.push('\t\t\t<img src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" data-src="'+ item.cover +'" alt="'+ item.title.replace(/<[^>]*>/g, ' ') +'" title="'+ item.title.replace(/<[^>]*>/g, ' ') +'" class="img-thumbnail" />\n');
+                        arr.push('\t\t\t<div class="decoration">\n');
+                        arr.push('\t\t\t\t<p class="subtitle"><i class="icon icon-time muted"></i> '+ (m +'/'+ d +'/'+ y.slice(2)) +' &nbsp; <i class="icon icon-eye-open muted"></i> '+ item.views +'</p>\n');
+                        arr.push('\t\t\t\t<p>'+ (item.description ? item.description.replace(/<[^>]*>/g, ' ') : render.cutstr(item.content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' '), 140)) +'</p>\n');
+                        arr.push('\t\t\t\t<div class="cl"></div>\n');
+                        arr.push('\t\t\t</div>\n');
+                        arr.push('\t\t</a>\n');
+                        arr.push('\t</div>\n');
+                    });
+                } else {
+                    arr.push(render.info('No posts', 'There have no posts'));
+                }
+                return arr.join('');
+            },
+
+            // list gallery
+            list_gallery: function(list) {
+                var arr = [];
+                if (list.length) {
+                    list.forEach(function(item, i) {
+                        var match = item.content.match(/<img[^>]*src=["']([^"']*)["'][^>]*>/i);
+                        item.cover = (item.cover || (match ? match[1] : '')).replace(/^.*?(\/static\/.+)$/i, render.cdn_url + '$1');
+                        arr.push('\t<div class="post">\n');
+                        arr.push('\t\t<a href="#'+ render.route(render.lang, 'detail', item.slug, 1, '', '') +'" title="'+ item.title.replace(/<[^>]*>/g, ' ') +'">\n');
+                        arr.push('\t\t\t<h2 class="title">'+ item.title +'</h2>\n');
+                        item.cover && arr.push('\t\t\t<img src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" data-src="'+ item.cover +'" alt="'+ item.title.replace(/<[^>]*>/g, ' ') +'" title="'+ item.title.replace(/<[^>]*>/g, ' ') +'" class="img-thumbnail" style="max-width:100%;" />\n');
+                        arr.push('\t\t</a>\n');
+                        arr.push('\t<div class="cl"></div>\n');
+                        arr.push('\t</div>\n');
+                    });
+                } else {
+                    arr.push(render.info('No galleries', 'There have no galleries'));
+                }
+                return arr.join('');
+            },
+
+            // list page
+            list_page: function(list) {
+                var arr = [];
+                if (list.length) {
+                    list.forEach(function(item, i) {
+                        var t = new Date(item.time * 1000);
+                        var y = t.getFullYear() + '';
+                        var m = ('0' + (t.getMonth() + 1)).slice(-2);
+                        var d = ('0' + t.getDate()).slice(-2);
+                        var match = item.content.match(/<img[^>]*src=["']([^"']*)["'][^>]*>/i);
+                        item.cover = (item.cover || (match ? match[1] : '')).replace(/^.*?(\/static\/.+)$/i, render.cdn_url + '$1');
+                        arr.push('\t<div class="post">\n');
+                        arr.push('\t\t<a href="#'+ render.route(render.lang, 'detail', item.slug, 1, '', '')+'" title="'+ item.title.replace(/<[^>]*>/g, ' ') +'">\n');
+                        arr.push('\t\t\t<h2 class="title">'+ item.title +'</h2>\n');
+                        item.cover && arr.push('\t\t\t<img src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" data-src="'+ item.cover +'" alt="'+ item.title.replace(/<[^>]*>/g, ' ') +'" title="'+ item.title.replace(/<[^>]*>/g, ' ') +'" class="img-thumbnail" />\n');
+                        arr.push('\t\t\t<div class="decoration">\n');
+                        arr.push('\t\t\t\t<p class="subtitle"><i class="icon icon-time muted"></i> '+ (m +'/'+ d +'/'+ y.slice(2)) +'</p>\n');
+                        arr.push('\t\t\t\t<p>'+ (item.description ? item.description.replace(/<[^>]*>/g, ' ') : render.cutstr(item.content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' '), 140)) +'</p>\n');
+                        arr.push('\t\t\t\t<div class="cl"></div>\n');
+                        arr.push('\t\t\t</div>\n');
+                        arr.push('\t\t</a>\n');
+                        arr.push('\t</div>\n');
+                    });
+                } else {
+                    arr.push(render.info('No pages', 'There have no pages'));
+                }
+                return arr.join('');
+            },
+
+            // pager
+            pager: function(count) {
+                var arr = [];
+                var total = Math.max(Math.ceil(count / render.limit), 1);
+                var prev = Math.max(render.p - 1, 1);
+                var next = Math.min(render.p + 1, total);
+                var begin = 1;
+                var end = 1;
+                if (render.p <= 2) {
+                    begin = 1;
+                    end = Math.min(total, 5);
+                } else {
+                    end = Math.min(render.p + 2, total);
+                    begin = Math.max(end - 4, 1);
+                }
+                if (render.p < 1) {
+                    render.p = 1;
+                    location.hash = '#'+ render.route(render.lang, render.type, render.slug, render.p, render.q, render.anchor);
+                } else if (render.p > total) {
+                    render.p = total;
+                    location.hash = '#'+ render.route(render.lang, render.type, render.slug, render.p, render.q, render.anchor);
+                } else {
+                    arr.push('<div id="more" class="position">\n');
+                    if (render.p == 1) {
+                        arr.push('\t<a href="javascript:;" style="cursor:not-allowed"><button type="button" disabled="disabled" style="cursor:not-allowed">Previous</button></a>\n');
+                    } else {
+                        arr.push('\t<a href="#'+ render.route(render.lang, render.type, render.slug, prev, render.q, render.anchor) +'" title="Previous page"><button type="button" style="cursor:pointer">Previous</button></a>\n');
+                    }
+                    arr.push('\t<select id="jumpTo">\n');
+                    for (var i = begin; i <= end; i++) {
+                        arr.push('\t\t<option'+ (i == render.p ? ' selected' : '') +'>'+ i +'</option>\n');
+                    }
+                    arr.push('\t</select>\n');
+                    if (render.p == total) {
+                        arr.push('\t<a href="javascript:;" style="cursor:not-allowed"><button type="button" disabled="disabled" style="cursor:not-allowed">Next</button></a>\n');
+                    } else {
+                        arr.push('\t<a href="#'+ render.route(render.lang, render.type, render.slug, next, render.q, render.anchor) +'" title="Next page"><button type="button" style="cursor:pointer">Next</button></a>\n');
+                    }
+                    arr.push('</div>\n');
+                }
+                return arr.join('');
+            },
+
+            // fail
+            fail: function(status, statusText) {
+                // unbind events
+                window.removeEventListener('click', render.click, false);
+                window.removeEventListener('change', render.change, false);
+                window.removeEventListener('keyup', render.keyup, false);
+                window.removeEventListener('scroll', render.scroll, false);
+                var codeMsg = {
+                    301: {
+                        title: '301 Moved Permanently',
+                        msg: 'The requested page has moved to a new URL'
+                    },
+                    302: {
+                        title: '302 Found',
+                        msg: 'The requested page has moved temporarily to a new URL'
+                    },
+                    400: {
+                        title: '400 Bad Request',
+                        msg: 'The request cannot be fulfilled due to bad syntax'
+                    },
+                    401: {
+                        title: '401 Unauthorized',
+                        msg: 'The request was a legal request, but the server is refusing to respond to it. For use when authentication is possible but has failed or not yet been provided'
+                    },
+                    403: {
+                        title: '403 Forbidden',
+                        msg: 'The request was a legal request, but the server is refusing to respond to it'
+                    },
+                    404: {
+                        title: '404 Not Found',
+                        msg: 'The requested page could not be found but may be available again in the future'
+                    },
+                    408: {
+                        title: '408 Request Timeout',
+                        msg: 'The server timed out waiting for the request'
+                    },
+                    500: {
+                        title: '500 Internal Server Error',
+                        msg: 'A generic error message, given when no more specific message is suitable'
+                    },
+                    501: {
+                        title: '501 Not Implemented',
+                        msg: 'The server either does not recognize the request method, or it lacks the ability to fulfill the request'
+                    },
+                    502: {
+                        title: '502 Bad Gateway',
+                        msg: 'The server was acting as a gateway or proxy and received an invalid response from the upstream server'
+                    },
+                    503: {
+                        title: '503 Service Unavailable',
+                        msg: 'The server is currently unavailable (overloaded or down)'
+                    },
+                    504: {
+                        title: '504 Gateway Timeout',
+                        msg: 'The server was acting as a gateway or proxy and did not receive a timely response from the upstream server'
+                    },
+                    505: {
+                        title: '505 HTTP Version Not Supported',
+                        msg: 'The server does not support the HTTP protocol version used in the request'
+                    },
+                };
+                document.getElementById('app').innerHTML = render.info(codeMsg[status] ? codeMsg[status].title : 'Error', codeMsg[status] ? codeMsg[status].msg : (statusText ? statusText : 'Status code: '+ status));
+            },
+
+            // info
+            info: function (title, msg) {
+                var arr = [];
+                arr.push('<div id="info">\n');
+                arr.push('\t<h2>'+ (title ? title : 'Page Not Found') +'</h2>\n');
+                arr.push('</div>');
+                arr.push('<div class="post">\n');
+                arr.push('\t<p>'+ (msg ? msg : 'Sorry, The page you are looking for cannot be found!') +'</p>\n');
+                arr.push('</div>\n');
+                return arr.join('');
+            },
+
+            // cutstr
+            cutstr: function (str, n, suffix) {
+                var len = 0;
+                var arr = [];
+                for (var i in str) {
+                    arr.push(str[i]);
+                    len += str[i].length;
+                    if (str[i].charCodeAt(0).toString(16).length == 4) {
+                        len += 1;
+                    }
+                    if (len > n) {
+                        arr.pop();
+                        arr.push(suffix || '...');
+                        break;
+                    }
+                }
+                return arr.join('');
+            },
+
+            // format key
+            format: function(dataArr, key) {
+                var obj = {};
+                dataArr.forEach(function(item, i) {
+                    obj[item[key]] = item;
+                });
+                return obj;
+            },
+
+            // levels tree
+            levels: function(dataArr, pid, level) {
+                var res = [];
+                for (var i = 0; i < dataArr.length; i++) {
+                    var data = dataArr[i];
+                    if (data.pid == pid) {
+                        var node = {};
+                        for (var key in data) {
+                            if (data.hasOwnProperty(key)) {
+                                node[key] = data[key];
+                            }
+                        }
+                        node.level = level;
+                        node.children = render.levels(dataArr, data.id, level + 1);
+                        res.push(node);
+                    }
+                }
+                return res;
+            },
+
+            // trees plat
+            trees: function(dataArr, pid, level) {
+                var res = [];
+                for (var i = 0; i < dataArr.length; i++) {
+                    var data = dataArr[i];
+                    if (data.pid == pid) {
+                        var node = {};
+                        for (var key in data) {
+                            if (data.hasOwnProperty(key)) {
+                                node[key] = data[key];
+                            }
+                        }
+                        node.level = level;
+                        res.push(node);
+                        var childNodes = render.trees(dataArr, data.id, level + 1);
+                        for (var j = 0; j < childNodes.length; j++) {
+                            res.push(childNodes[j]);
+                        }
+                    }
+                }
+                return res;
+            },
+
+            // recursive root
+            parents: function(dataArr, id) {
+                var res = [];
+                for (var i = 0; i < dataArr.length; i++) {
+                var data = dataArr[i];
+                if (data.id == id) {
+                    var node = {};
+                    for (var key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            node[key] = data[key];
+                        }
+                    }
+                    res.push(node);
+                    var parentNodes = render.parents(dataArr, data.pid);
+                    for (var j = 0; j < parentNodes.length; j++) {
+                        res.push(parentNodes[j]);
+                    }
+                    break;
+                }
+                }
+                return res;
+            },
+
+            // plate level tree
+            plates: function(dataArr, res) {
+                res = res || [];
+                for (var i = 0; i < dataArr.length; i++) {
+                    var data = {};
+                    for (var key in dataArr[i]) {
+                        if (dataArr[i].hasOwnProperty(key)) {
+                            data[key] = dataArr[i][key];
+                        }
+                    }
+                    if (data.children) {
+                        var children = data.children.slice();
+                        delete data.children;
+                        res.push(data);
+                        render.plates(children, res);
+                    } else {
+                        res.push(data);
+                    }
+                }
+                return res;
+            },
+            
+            // Font zoom
+            bigger: function () {
+                var element = document.getElementById('entry-content');
+                var computedStyle = window.getComputedStyle ? window.getComputedStyle(element, null) : element.currentStyle;
+                var fontSize = computedStyle.fontSize || computedStyle.getPropertyValue('font-size');
+                var unit = fontSize.slice(-2);
+                var textFontSize = parseFloat(fontSize);
+                if (unit === 'em') {
+                    if (textFontSize < 2.4) {
+                        textFontSize += 0.1;
+                    }
+                } else {
+                    if (textFontSize < 24) {
+                        textFontSize += 1;
+                    }
+                }
+                document.getElementById("entry-content").style.cssText = "font-size:" + textFontSize + unit;
+            },
+            smaller: function () {
+                var element = document.getElementById('entry-content');
+                var computedStyle = window.getComputedStyle ? window.getComputedStyle(element, null) : element.currentStyle;
+                var fontSize = computedStyle.fontSize || computedStyle.getPropertyValue('font-size');
+                var unit = fontSize.slice(-2);
+                var textFontSize = parseFloat(fontSize);
+                if (unit === 'em') {
+                    if (textFontSize > 1.4) {
+                        textFontSize -= 0.1;
+                    }
+                } else {
+                    if (textFontSize > 14) {
+                        textFontSize -= 1;
+                    }
+                }
+                document.getElementById("entry-content").style.cssText = "font-size:" + textFontSize + unit;
+            },
+
+            // Favorite
+            favorite: function() {
+                var elem = document.getElementById('btn-favorite');
+                var icon = document.getElementById('icon-favorite');
+                var article_id = elem.getAttribute('data-id') || 0;
+                var store = render.getItem(elem.getAttribute('data-store')) || [];
+                var obj = null;
+                while(store.length > 500) store.pop();
+                for (var i = 0; i < store.length; i++) {
+                    if (store[i].id == article_id) {
+                        obj = store[i];
+                    }
+                }
+                if (!obj && icon.className.indexOf('icon-star-empty') !== -1) {
+                    elem.setAttribute('title', elem.getAttribute('data-cancel'));
+                    elem.innerHTML = '<i id="icon-favorite" class="icon icon-star"></i>';
+                    store.unshift({ id: article_id, timestamp: +new Date(), lang: elem.getAttribute('data-lang') });
+                } else {
+                    elem.setAttribute('title', elem.getAttribute('data-favorite'));
+                    elem.innerHTML = '<i id="icon-favorite" class="icon icon-star-empty"></i>';
+                    var newArr = [];
+                    for (var i = 0; i < store.length; i++) {
+                        if (store[i].id == article_id)
+                            continue;
+                        newArr.push(store[i]);
+                    }
+                    store = newArr;
+                }
+                render.setItem(elem.getAttribute('data-store'), store);
+                document.getElementById('post-favorites').innerText = store.length;
+            },
+
+            // encrypt
+            encrypt: function (s) {
+                var es = [], c = '', ec = '';
+                s = s.split('');
+                for (var i = 0, length = s.length; i < length; i++) {
+                    c = s[i];
+                    ec = encodeURIComponent(c);
+                    if (ec == c) {
+                        ec = c.charCodeAt().toString(16);
+                        ec = ('00' + ec).slice(-2);
+                    }
+                    es.push(ec);
+                }
+                return es.join('').replace(/%/g,'').toUpperCase();
+            },
+
+            // To top
+            top: function(callback) {
+                var distance = document.documentElement.scrollTop || document.body.scrollTop;
+                var timer = setInterval(function () {
+                    distance += Math.floor((0 - distance) / 10);
+                    window.scrollTo(0, Math.max(distance, 0));
+                    if (distance <= 0) {
+                        window.scrollTo(0, 0);
+                        clearInterval(timer);
+                        timer = null;
+                        typeof callback === 'function' && callback();
+                    }
+                }, 10);
+            },
+
+            // voice reader
+            playEndedHandler: function () {
+                render.playErrors = 0;
+                if (render.textArray.length > 0) {
+                    if (!render.offLine) {
+                        render.audio.src = render.audioArray.pop();
+                        render.audio.play();
+                    }
+                    var reader = render.textArray.shift();
+                    if (render.offLine) {
+                        render.speechInstance.text = reader.text;
+                        window.speechSynthesis.speak(render.speechInstance);
+                    }
+                    var elem = null;
+                    for (var i = 0; i < render.nodes.length; i++) {
+                        if (reader.index == render.nodes[i].index) {
+                            if (render.nodes[i].node.nodeType === 3) {
+                                var wrapper = document.createElement('span');
+                                render.nodes[i].node.parentNode.insertBefore(wrapper, render.nodes[i].node);
+                                render.nodes[i].node.parentNode.removeChild(render.nodes[i].node);
+                                wrapper.appendChild(render.nodes[i].node);
+                                render.nodes[i].node = wrapper;
+                            }
+                            elem = render.nodes[i].node;
+                            if (render.nodes[i].node.className) {
+                                render.nodes[i].node.className += render.nodes[i].node.className.match(/^tts$|^tts\s+|\s+tts/) ? '' : ' tts';
+                            } else {
+                                render.nodes[i].node.className = 'tts';
+                            }
+                        } else {
+                            if (render.nodes[i].node.nodeType === 1 && render.nodes[i].node.className) {
+                                render.nodes[i].node.className = render.nodes[i].node.className.replace(/^tts$|^tts\s+|\s+tts/g, '');
+                            }
+                        }
+                    }
+                    var clientHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+                    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                    var pos = 0;
+                    var topH = elem.offsetHeight;
+                    while (elem) {
+                        pos += elem.offsetTop;
+                        elem = elem.offsetParent;
+                    }
+                    if (pos > clientHeight + scrollTop - topH) {
+                        var distance = 0;
+                        var timer = setInterval(function () {
+                            distance += Math.ceil((pos - distance) / 10);
+                            window.scrollTo(0, Math.min(distance, pos));
+                            if (distance >= pos - 60) {
+                                window.scrollTo(0, pos - 60);
+                                clearInterval(timer);
+                                timer = null;
+                            }
+                        }, 10);
+                    }
+                } else {
+                    render.stop();
+                    setTimeout(function () {
+                        if (render.nodes[render.nodes.length - 1].node.nodeType === 3) {
+                            var wrapper = document.createElement('span');
+                            render.nodes[render.nodes.length - 1].node.parentNode.insertBefore(wrapper, render.nodes[render.nodes.length - 1].node);
+                            render.nodes[render.nodes.length - 1].node.parentNode.removeChild(render.nodes[render.nodes.length - 1].node);
+                            wrapper.appendChild(render.nodes[render.nodes.length - 1].node);
+                            render.nodes[render.nodes.length - 1].node = wrapper;
+                        }
+                        elem = render.nodes[render.nodes.length - 1].node;
+                        var distance = 0;
+                        while (elem) {
+                            distance += elem.offsetTop;
+                            elem = elem.offsetParent;
+                        }
+                        var timer = setInterval(function () {
+                            distance += Math.floor((0 - distance) / 10);
+                            window.scrollTo(0, Math.max(distance, 0));
+                            if (distance <= 0) {
+                                window.scrollTo(0, 0);
+                                clearInterval(timer);
+                                timer = null;
+                            }
+                        }, 10);
+                    }, 1000);
+                }
+            },
+            playErrorHandler: function () {
+                render.playErrorTimer && clearTimeout(render.playErrorTimer);
+                render.playErrorTimer = setTimeout(function () {
+                    if (render.playErrors % 10 < 9) {
+                        render.playErrors++;
+                        render.audio.src = render.audio.src.split('&t=')[0] + '&t=' + new Date().getTime();
+                        render.audio.play();
+                    } else {
+                        clearTimeout(render.playErrorTimer);
+                        render.playErrorTimer = null;
+                        render.playErrors = 0;
+                        document.getElementById('spinner').innerHTML = 'Error! Audio error code: ' + render.audio.error.code;
+                        setTimeout(function() {
+                            render.stop();
+                        }, 5000);
+                    }
+                }, 3000 + Math.ceil(Math.random() * 2000));
+            },
+            play: function () {
+                document.getElementById('btn-play').setAttribute('class', 'invisible');
+                document.getElementById('btn-pause').setAttribute('class', 'visible');
+                document.getElementById('btn-stop').setAttribute('class', 'visible');
+                if (render.stopped) {
+                    if (render.nodes.length < 1) {
+                        return false;
+                    }
+                    document.getElementById('spinner').innerHTML = '<i class="icon icon-loading muted"></i> Loading ...';
+                    var icon = new Image();
+                    icon.src = 'https://translate.google.com/favicon.ico?t=' + new Date().getTime();
+                    var timer = setTimeout(function () {
+                        icon.onerror = icon.onload = null;
+                        baidu_fanyi_tts();
+                    }, 3000);
+                    icon.onerror = function () {
+                        clearTimeout(timer);
+                        timer = null;
+                        baidu_fanyi_tts();
+                    }
+                    icon.onload = function () {
+                        clearTimeout(timer);
+                        timer = null;
+                        google_translate_tts();
+                    }
+                    function google_translate_tts() {
+                        render.offLine = false;
+                        render.ttsApi = 'https://translate.google.com/translate_tts?client=gtx&ie=UTF-8&tl=' + (render.voice || 'cmn-Hans-CN') + '&q=';
+                        doPlay();
+                    }
+                    function baidu_fanyi_tts() {
+                        var icon = new Image();
+                        icon.src = 'https://fanyi.baidu.com/favicon.ico?t=' + new Date().getTime();
+                        var timer = setTimeout(function () {
+                            icon.onerror = icon.onload = null;
+                            if (render.offLine) {
+                                doPlay();
+                            } else {
+                                document.getElementById('spinner').innerHTML = 'Error! try Again ...';
+                                setTimeout(function() {
+                                    render.stop();
+                                }, 5000);
+                            }
+                        }, 3000);
+                        icon.onerror = function () {
+                            clearTimeout(timer);
+                            timer = null;
+                            if (render.offLine) {
+                                doPlay();
+                            } else {
+                                document.getElementById('spinner').innerHTML = 'Error! try Again ...';
+                                setTimeout(function() {
+                                    render.stop();
+                                }, 5000);
+                            }
+                        }
+                        icon.onload = function () {
+                            clearTimeout(timer);
+                            timer = null;
+                            var support = { 'zh-CN': 'zh', 'zh-TW': 'zh', en: 'en', ja: 'jp', ko: 'kor' };
+                            if (support[render.lang]) {
+                                render.offLine = false;
+                                render.ttsApi = 'https://fanyi.baidu.com/gettts?lan=' + support[render.lang] + '&spd=5&source=web&text=';
+                                doPlay();
+                            } else {
+                                document.getElementById('spinner').innerHTML = 'baidu api not supported! please try google api!';
+                                document.getElementById('btn-play').setAttribute('disabled', 'disabled');
+                            }
+                        }
+                    }
+                    function doPlay() {
+                        var num = 200;
+                        for (var i = 0; i < render.nodes.length; i++) {
+                            var arrs = render.nodes[i].node.textContent.trim().split(/(\r\n|\r|\n)/g);
+                            for (var j = 0; j < arrs.length; j++) {
+                                var aAudioText = arrs[j].trim();
+                                if (aAudioText && !render.offLine) {
+                                    while (aAudioText.length >= num) {
+                                        var arr = [];
+                                        for (var k in aAudioText) {
+                                            arr.push(aAudioText[k]);
+                                            if (arr.join('').length >= num) {
+                                                arr.pop();
+                                                break;
+                                            }
+                                        }
+                                        var pos = arr.join('').length;
+                                        render.textArray.push({ text: aAudioText.slice(0, pos), index: render.nodes[i].index });
+                                        aAudioText = aAudioText.slice(pos);
+                                    }
+                                }
+                                aAudioText && render.textArray.push({ text: aAudioText, index: render.nodes[i].index });
+                            }
+                        }
+                        if (render.textArray.length < 1) {
+                            return false;
+                        }
+                        if (!render.offLine) {
+                            for (var i = 0; i < render.textArray.length; i++) {
+                                var address = render.ttsApi + encodeURIComponent(render.textArray[i]['text']);
+                                if (render.ttsApi.match(/\/\/[\w]+\.google/)) {
+                                    address += '&tk=' + render.getTk(render.textArray[i]['text']);
+                                }
+                                render.audioArray.unshift(address);
+                            }
+                            render.audio.preload = true;
+                            render.audio.controls = true;
+                            render.audio.src = render.audioArray.pop();
+                            render.audio.addEventListener('ended', render.playEndedHandler);
+                            render.audio.addEventListener('error', render.playErrorHandler);
+                            render.audio.loop = false;
+                            render.audio.play();
+                        }
+                        render.stopped = false;
+                        var reader = render.textArray.shift();
+                        if (render.offLine) {
+                            render.speechInstance = new SpeechSynthesisUtterance();
+                            window.speechSynthesis.cancel();
+                            render.speechInstance.lang = render.offLine;
+                            render.speechInstance.text = reader.text;
+                            window.speechSynthesis.speak(render.speechInstance);
+                            render.speechInstance.addEventListener('end', render.playEndedHandler);
+                        }
+                        for (var i = 0; i < render.nodes.length; i++) {
+                            if (reader.index == render.nodes[i].index) {
+                                if (render.nodes[i].node.nodeType === 3) {
+                                    var wrapper = document.createElement('span');
+                                    render.nodes[i].node.parentNode.insertBefore(wrapper, render.nodes[i].node);
+                                    render.nodes[i].node.parentNode.removeChild(render.nodes[i].node);
+                                    wrapper.appendChild(render.nodes[i].node);
+                                    render.nodes[i].node = wrapper;
+                                }
+                                if (render.nodes[i].node.className) {
+                                    render.nodes[i].node.className += render.nodes[i].node.className.match(/^tts$|^tts\s+|\s+tts/) ? '' : ' tts';
+                                } else {
+                                    render.nodes[i].node.className = 'tts';
+                                }
+                            } else {
+                                if (render.nodes[i].node.nodeType === 1 && render.nodes[i].node.className) {
+                                    render.nodes[i].node.className = render.nodes[i].node.className.replace(/^tts$|^tts\s+|\s+tts/g, '');
+                                }
+                            }
+                        }
+                        document.getElementById('spinner').innerHTML = '';
+                    }
+                } else {
+                    if (!render.offLine) {
+                        render.audio.play();
+                    } else {
+                        window.speechSynthesis.resume();
+                    }
+                }
+            },
+            pause: function () {
+                document.getElementById('btn-play').setAttribute('class', 'visible');
+                document.getElementById('btn-pause').setAttribute('class', 'invisible');
+                document.getElementById('btn-stop').setAttribute('class', 'visible');
+                document.getElementById('spinner').innerHTML = '';
+                if (!render.offLine) {
+                    render.audio.pause();
+                } else {
+                    if (window.speechSynthesis.speaking) {
+                        window.speechSynthesis.pause();
+                    }
+                }
+            },
+            stop: function () {
+                document.getElementById('btn-play') && document.getElementById('btn-play').setAttribute('class', 'visible');
+                document.getElementById('btn-pause') && document.getElementById('btn-pause').setAttribute('class', 'invisible');
+                document.getElementById('btn-stop') && document.getElementById('btn-stop').setAttribute('class', 'invisible');
+                document.getElementById('spinner') && (document.getElementById('spinner').innerHTML = '');
+                if (!render.offLine) {
+                    render.audio.pause();
+                    render.audio.removeEventListener('ended', render.playEndedHandler);
+                    render.audio.removeEventListener('error', render.playErrorHandler);
+                    render.audioArray = [];
+                } else {
+                    window.speechSynthesis.cancel();
+                    render.speechInstance && render.speechInstance.removeEventListener('end', render.playEndedHandler)
+                }
+                render.stopped = true;
+                render.textArray = [];
+                for (var i = 0; i < render.nodes.length; i++) {
+                    if (render.nodes[i].node.nodeType === 1 && render.nodes[i].node.className) {
+                        render.nodes[i].node.className = render.nodes[i].node.className.replace(/^tts$|^tts\s+|\s+tts/g, '');
+                    }
+                }
+            },
+
+            // google baidu tk(default google)
+            getTk: function(a, t) {
+                var gtk = t ? '320305.131321201' : '406398.2087938574';
+                var e = gtk.split('.'), h = Number(e[0]) || 0, g = [], d = 0, i, j;
+                for (var f = 0; f < a.length; f++) {
+                    var c = a.charCodeAt(f);
+                    128 > c ? g[d++] = c : (2048 > c ? g[d++] = c >> 6 | 192 : (55296 == (c & 64512) && f + 1 < a.length && 56320 == (a.charCodeAt(f + 1) & 64512) ? (c = 65536 + ((c & 1023) << 10) + (a.charCodeAt(++f) & 1023), g[d++] = c >> 18 | 240, g[d++] = c >> 12 & 63 | 128) : g[d++] = c >> 12 | 224, g[d++] = c >> 6 & 63 | 128), g[d++] = c & 63 | 128)
+                }
+                a = h;
+                for (var d = 0; d < g.length; d++) {
+                    a += g[d];
+                    i = '+-a^+6';
+                    for (var k = 0; k < i.length - 2; k += 3) {
+                        j = i.charAt(k + 2);
+                        j = 'a' <= j ? j.charCodeAt(0) - 87 : Number(j);
+                        j = '+' == i.charAt(k + 1) ? a >>> j : a << j;
+                        a = '+' == i.charAt(k) ? a + j & 4294967295 : a ^ j;
+                    }
+                }
+                i = '+-3^+b+-f';
+                for (var k = 0; k < i.length - 2; k += 3) {
+                    j = i.charAt(k + 2);
+                    j = 'a' <= j ? j.charCodeAt(0) - 87 : Number(j);
+                    j = '+' == i.charAt(k + 1) ? a >>> j : a << j;
+                    a = '+' == i.charAt(k) ? a + j & 4294967295 : a ^ j;
+                }
+                a ^= Number(e[1]) || 0;
+                0 > a && (a = (a & 2147483647) + 2147483648);
+                a %= 1E6;
+                return a.toString() + '.' + (a ^ h);
+            },
+
+            // Cookie options
+            setCookie: function(name, value, options) {
+                options = options || {};
+                if (value === null) {
+                    value = '';
+                    options.expires = -1;
+                }
+                var expires = '';
+                if (options.expires && (typeof options.expires == 'number' || options.expires.toUTCString)) {
+                    var date;
+                    if (typeof options.expires == 'number') {
+                        date = new Date();
+                        date.setTime(date.getTime() + (options.expires * 24 * 60 * 60 * 1000));
+                    } else {
+                        date = options.expires;
+                    }
+                    // use expires attribute, max-age is not supported by IE
+                    expires = '; expires=' + date.toUTCString();
+                }
+                var path = options.path ? '; path=' + options.path : '';
+                var domain = options.domain ? '; domain=' + options.domain : '';
+                var secure = options.secure ? '; secure' : '';
+                var c = [name, '=', encodeURIComponent(value)].join('');
+                var cookie = [c, expires, path, domain, secure].join('');
+                document.cookie = cookie;
+            },
+            getCookie: function(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            },
+
+            // sanitize data
+            sanitize: function(data) {
+                // favorite article
+                if (document.getElementById('entry-content')) {
+                    // favorite
+                    var elem = document.getElementById('btn-favorite');
+                    var icon = document.getElementById('icon-favorite');
+                    var article_id = elem.getAttribute('data-id') || 0;
+                    var store = render.getItem(elem.getAttribute('data-store')) || [];
+                    var obj = store.filter(function(item, i) {
+                        return item.id == article_id;
+                    })[0];
+                    if (obj) {
+                        elem.setAttribute('title', elem.getAttribute('data-cancel'));
+                        elem.innerHTML = '<i id="icon-favorite" class="icon icon-star"></i>';
+                    } else {
+                        elem.setAttribute('title', elem.getAttribute('data-favorite'));
+                        elem.innerHTML = '<i id="icon-favorite" class="icon icon-star-empty"></i>';
+                    }
+                    document.getElementById('post-favorites').innerText = store.length;
+                }
+
+                // Get favorites or likes articles list
+                if (document.getElementById('loop') && document.getElementById('loop').getAttribute('data-slug')) {
+                    var slug = document.getElementById('loop').getAttribute('data-slug');
+                    var storeName = slug == 'page-favorites' ? (data.langs && data.langs.length ? 'multiPostFavorites' : 'postFavorites') : (slug == 'page-likes' ? (data.langs && data.langs.length ? 'multiPostLikes' : 'postLikes') : '');
+                    if (storeName == '') return false;
+                    var ids = (render.getItem(storeName) || []).filter(function(item, i) {
+                        return item.lang == render.lang;
+                    }).map(function(item ,i) {
+                        return parseInt(item.id);
+                    });
+                    var articles = data.articles.filter(function(item, i) {
+                        return ids.indexOf(item.id) !== -1;
+                    });
+                    if (articles.length) {
+                        var arr = [];
+                        arr.push(render.list_item(articles.slice((render.p - 1) * render.limit, render.p * render.limit)));
+                        arr.push(render.pager(articles.length));
+                        document.getElementById('loop').innerHTML = arr.join('');
+                        render.scroll();
+                    } else {
+                        document.getElementById('loop').outerHTML = render.info('No posts', 'There have no favorite posts');
+                    }
+                }
+
+                // voide reader
+                if (document.getElementById('entry-content') && data.setting.voice_read == '1') {
+                    var nodes = document.getElementById('entry-content').childNodes;
+                    var ignore = ['STYLE', 'SCRIPT', 'IFRAME', 'VIDEO', 'AUDIO', 'SOURCE', 'PRE', 'CODE', 'IMG', 'BR', 'HR', 'TABLE', 'FORM', 'FIELDSET', 'LEGEND', 'LABEL', 'INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'];
+                    var meta = document.createElement('meta');
+                    meta.setAttribute('name', 'referrer');
+                    meta.setAttribute('content', 'same-origin');
+                    document.head.appendChild(meta).parentNode.removeChild(meta);
+                    for (var i = 0; i < nodes.length; i++) {
+                        var node = nodes.item(i);
+                        if (ignore.indexOf(node.tagName) === -1 && node.textContent.trim()) {
+                            render.nodes.push({ node: node, index: i });
+                        }
+                    }
+                    if ('speechSynthesis' in window) {
+                        var i = 0;
+                        var timer = setInterval(function () {
+                            i++;
+                            var voices = window.speechSynthesis.getVoices();
+                            if (voices.length || i > 10) {
+                                clearInterval(timer);
+                                timer = null;
+                                for (var j = 0; j < voices.length; j++) {
+                                    if (voices[j].lang.indexOf('zh-CN') !== -1) {
+                                        render.offLine = voices[j].lang;
+                                        break;
+                                    }
+                                }
+                            }
+                        }, 100);
+                    }
+                }
+
+                // zh-TW Lang
+                if (render.lang == 'zh-TW') {
+                    var script = document.createElement('script');
+                    script.type = 'text/javascript';
+                    script.src = document.domain.match(/localhost|127.0.0.1/i) ? './static/js/jiantifanti-1.0.1.min.js' : 'https://fastly.jsdelivr.net/npm/jiantifanti@1.0.1/index.min.js';
+                    script.onload = function() {
+                        function zh_tranTW(obj, tran) {
+                            var o = (typeof (obj) == 'object') ? obj.childNodes : document.body.childNodes;
+                            for (var i = 0; i < o.length; i++) {
+                                var c = o.item(i);
+                                if (['BR', 'HR', 'TEXTAREA', 'SCRIPT'].indexOf(c.tagName) !== -1) continue;
+                                if (c.className != '' && c.className != null && c.className != undefined && c.className == 'ignore') continue;
+                                if (c.title != '' && c.title != null) {
+                                    c.title = tran(c.title);
+                                }
+                                if (c.alt != '' && c.alt != null) {
+                                    c.alt = tran(c.alt);
+                                }
+                                if (c.tagName == 'INPUT' && c.value != '' && c.type != 'text' && c.type != 'hidden' && c.type != 'password') {
+                                    c.value = tran(c.value);
+                                }
+                                if (c.tagName == 'META' && c.getAttribute('name') == 'description' && c.getAttribute('content')) {
+                                    c.setAttribute('content', tran(c.getAttribute('content')));
+                                }
+                                if (c.nodeType == 3) {
+                                    c.data = tran(c.data);
+                                } else {
+                                    zh_tranTW(c, tran);
+                                }
+                            }
+                        }
+                        typeof jiantifanti == 'object' && zh_tranTW(document.body, jiantifanti.traditionalized);
+                        typeof jiantifanti == 'object' && zh_tranTW(document.head, jiantifanti.traditionalized);
+                    }
+                    document.head.appendChild(script);
+                }
+
+                // mni-Mtei Lang
+                if (render.lang == 'mni-Mtei') {
+                    var style = document.createElement('link');
+                    style.rel = 'stylesheet';
+                    style.href = document.domain.match(/localhost|127.0.0.1/i) ? './static/css/meetei-mayek.css' : 'https://fonts.googleapis.com/css?family=Noto Sans Meetei Mayek';
+                    style.crossOrigin = 'anonymous';
+                    style.onload = function() {
+                        var font = 'Noto Sans Meetei Mayek'
+                        var fonts = document.body.style.fontFamily.split(',').map(function(item) {
+                            return item.trim();
+                        }).filter(function(item) {
+                            return item;
+                        }) || [];
+                        if (fonts.indexOf(font) === -1) {
+                            fonts.push(font);
+                            document.body.style.fontFamily = fonts.join(',');
+                        }
+                    }
+                    document.head.appendChild(style);
+                }
+
+                // Bind events
+                window.addEventListener('click', render.click, false);
+                window.addEventListener('change', render.change, false);
+                window.addEventListener('keyup', render.keyup, false);
+                window.addEventListener('scroll', render.scroll, false);
+                render.scroll();
+            },
+
+            // loader
+            loader: function() {
+                var arr = [];
+                arr.push('<div id="loader">\n');
+                arr.push('\t<div class="inner">\n');
+                arr.push('\t\t<h1>Loading...</h1>\n');
+                arr.push('\t\t<i class="icon icon-loading"></i>\n');
+                arr.push('\t</div>\n');
+                arr.push('</div>\n');
+                return arr.join('');
+            },
+
+            // Ajax request
+            ajax: function(type, url, data, callback, fail) {
+                type = (type || 'GET').toUpperCase();
+                var xhr = new XMLHttpRequest();
+                var params = '';
+                var datas = typeof data === 'function' ? data() : data;
+                if (!(typeof FormData !== 'undefined' && datas instanceof FormData) && datas && typeof datas === 'object') {
+                    for (var key in datas) {
+                        if (params) params += '&';
+                        params += encodeURIComponent(key) +'='+  encodeURIComponent(datas[key]);
+                    }
+                } else {
+                    params = datas;
+                }
+                if (type === 'GET') {
+                    xhr.open(type, url + (params ? ((url.indexOf('?') === -1 ? '?' : '&') + params + '&__=' + new Date().getTime() + parseInt(Math.random() * 1000)) : ''), true);
+                    params = null;
+                } else if (type === 'POST') {
+                    xhr.open(type, url, true);
+                    if (typeof FormData === 'undefined' || !(params instanceof FormData)) {
+                        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
+                    }
+                }
+                xhr.timeout = 30000;
+                xhr.send(params);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+                            if (typeof callback === 'function') {
+                                try {
+                                    // cache data
+                                    render.cache[render.lang] = {
+                                        expires: new Date().getTime(),
+                                        datas: JSON.parse(xhr.responseText)
+                                    };
+                                    callback(JSON.parse(xhr.responseText));
+                                } catch(e) {
+                                    callback({code: 1, msg: 'JSON data parse error!'});
+                                }
+                            }
+                        } else {
+                            typeof fail === 'function' && fail(xhr.status);
+                        }
+                    }
+                }
+                xhr.ontimeout = function() {
+                    typeof fail === 'function' && fail(408);
+                }
+                xhr.onerror = function() {
+                    typeof fail === 'function' && fail(xhr.status, xhr.statusText);
+                }
+            },
+
+            // Jsonp request
+            jsonp: function(url, data, callback, fail) {
+                var params = '';
+                var datas = typeof data === 'function' ? data() : data;
+                if (!(typeof FormData !== 'undefined' && datas instanceof FormData) && datas && typeof datas === 'object') {
+                    for (var key in datas) {
+                        if (params) params += '&';
+                        params += encodeURIComponent(key) +'='+ encodeURIComponent(datas[key]);
+                    }
+                } else {
+                    params = datas;
+                }
+                var script = document.createElement('script');
+                var globFuncName = 'jsonp_' + render.path.replace(/[^\w]/g, '_');
+                script.src = url + (params ? ((url.indexOf('?') === -1 ? '?' : '&') + params) : '') + (params ? '&' : (url.indexOf('?') === -1 ? '?' : '&')) + 'callback='+ globFuncName + '&__=' + new Date().getTime() + parseInt(Math.random() * 1000);
+                document.head.appendChild(script).parentNode.removeChild(script);
+                var timeout = setTimeout(function() {
+                    window[globFuncName] = null;
+                    script.onerror = null;
+                    fail && fail(408);
+                }, 30000);
+                window[globFuncName] = function (data) {
+                    window[globFuncName] = null;
+                    script.onerror = null;
+                    clearTimeout(timeout);
+                    callback && callback(data);
+                }
+                script.onerror = function() {
+                    window[globFuncName] = null;
+                    script.onerror = null;
+                    clearTimeout(timeout);
+                    fail && fail(500);
+                }
+            }
+        }
+        render.init();
+    </script>
+</body>
+</html>

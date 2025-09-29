@@ -1,0 +1,11 @@
+/* 梅泰语（曼尼普尔语）字体 */
+@font-face {
+    font-family: 'Noto Sans Meetei Mayek';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Noto Sans Meetei Mayek'), url('../fonts/NotoSansMeeteiMayek.woff') format('woff');
+}
+
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Noto Sans Meetei Mayek';
+}
