@@ -390,7 +390,7 @@
             // 本地存储
             getItem: function (key, type) {
                 var storage = !type ? 'localStorage' : 'sessionStorage';
-                if (!window[storage] || 'object' != typeof window[storage]) return false;
+                if (!window[storage] || typeof window[storage] != 'object') return false;
                 var value = window[storage].getItem(key);
                 try {
                     return JSON.parse(value)
@@ -400,7 +400,7 @@
             },
             setItem: function (key, value, type) {
                 var storage = !type ? 'localStorage' : 'sessionStorage';
-                if (!window[storage] || 'object' != typeof window[storage]) return false;
+                if (!window[storage] || typeof window[storage] != 'object') return false;
                 try {
                     if (typeof value === 'object') {
                         value = JSON.stringify(value);
@@ -412,7 +412,7 @@
             },
             removeItem: function (key, type) {
                 var storage = !type ? 'localStorage' : 'sessionStorage';
-                if (!window[storage] || 'object' != typeof window[storage]) return false;
+                if (!window[storage] || typeof window[storage] != 'object') return false;
                 try {
                     window[storage].removeItem(key);
                 } catch (e) {
