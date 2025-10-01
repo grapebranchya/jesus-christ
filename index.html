@@ -1342,7 +1342,7 @@
                         // 版权信息
                         arr.push('\t\t\t\t<div class="well well-sm text-muted">\n');
                         arr.push('\t\t\t\t\t' + (data.localize && data.localize.copyr_info ? data.localize.copyr_info : '除非特别说明，本博客均为原创，如需转载，请以链接形式标明来源出处。') + '<br>\n');
-                        arr.push('\t\t\t\t\t' + (data.localize && data.localize.copyr_address ? data.localize.copyr_address : '本文博客网址') + ': ' + (article ? (location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/#' + render.route(render.lang, 'detail', article.slug, 1, '', '')) : data.localize && data.localize.no_address ? data.localize.no_address : '还没有网址') + '\n');
+                        arr.push('\t\t\t\t\t' + (data.localize && data.localize.copyr_address ? data.localize.copyr_address : '本文博客网址') + ': ' + (article ? (location.protocol.match(/https?:/) ? location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') : render.cdn_url) + '/#' + render.route(render.lang, 'detail', article.slug, 1, '', '')) : data.localize && data.localize.no_address ? data.localize.no_address : '还没有网址') + '\n');
                         arr.push('\t\t\t\t</div>\n');
                         // 点赞
                         arr.push('\t\t\t\t<button type="button" class="btn btn-success' + (render.login != 0 ? ' btn-likes' : ' login') + '">\n');
@@ -3045,8 +3045,8 @@
                             var shareData = {
                                 title: encodeURIComponent((article.title + '-' + data.setting.webName).replace(/<[^>]*>/g, '')),
                                 desc: encodeURIComponent(render.cutstr((article.description || article.content).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' '), 70, '...')),
-                                source: encodeURIComponent(location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/'),
-                                url: encodeURIComponent(location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/#' + render.route(render.lang, 'detail', article.slug, 1, '', '')),
+                                source: encodeURIComponent(location.protocol.match(/https?:/) ? location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/' : render.cdn_url),
+                                url: encodeURIComponent((location.protocol.match(/https?:/) ? location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') : render.cdn_url) + '/#' + render.route(render.lang, 'detail', article.slug, 1, '', '')),
                                 image: encodeURIComponent((article.cover || (match ? match[1] : '')).replace(/^.*?(\/static\/.+)$/i, render.cdn_url + '$1'))
                             };
                             var shareMethods = {
