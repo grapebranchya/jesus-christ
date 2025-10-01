@@ -305,6 +305,7 @@
             toggleSch: false,
             toggleNav: false,
             api: document.domain.match(/localhost|127.0.0.1/) ? '.' : 'https://jesus-christ.pages.dev',
+            langs: ['co', 'gn', 'rw', 'ha', 'no', 'af', 'yo', 'en', 'gom', 'la', 'ne', 'fr', 'cs', 'haw', 'ka', 'ru', 'zh-CN', 'fa', 'bho', 'hi', 'be', 'sw', 'is', 'yi', 'ak', 'ga', 'gu', 'km', 'sk', 'iw', 'kn', 'hu', 'ta', 'ar', 'bn', 'az', 'sm', 'su', 'da', 'sn', 'bm', 'lt', 'vi', 'mt', 'tk', 'as', 'ca', 'si', 'ceb', 'gd', 'sa', 'pl', 'gl', 'lv', 'uk', 'tt', 'cy', 'ja', 'tl', 'ay', 'lo', 'te', 'ro', 'ht', 'doi', 'sv', 'mai', 'th', 'hy', 'my', 'ps', 'hmn', 'dv', 'zh-TW', 'lb', 'sd', 'ku', 'tr', 'mk', 'bg', 'ms', 'lg', 'mr', 'et', 'ml', 'de', 'sl', 'ur', 'pt', 'ig', 'ckb', 'om', 'el', 'es', 'fy', 'so', 'am', 'ny', 'pa', 'eu', 'it', 'sq', 'ko', 'tg', 'fi', 'ky', 'ee', 'hr', 'qu', 'bs', 'mi', 'or', 'ti', 'kk', 'nl', 'kri', 'ln', 'mg', 'mn', 'lus', 'xh', 'zu', 'sr', 'nso', 'st', 'eo', 'mni-Mtei', 'ug', 'uz', 'ilo', 'id', 'jw', 'ts'],
             timer: null,
             // voice reader
             stopped: true,
@@ -336,28 +337,27 @@
 
             // hash router
             router: function() {
+                var config = render.getConfig() || {};
+                var lang = config.lang || navigator.language || navigator.userLanguage || 'zh-CN'
+                if (/-cn|sg/i.test(lang)) lang = 'zh-CN';
+                if (/-tw|hk|mo/i.test(lang)) lang = 'zh-TW';
+                if (render.langs.indexOf(lang) === -1) {
+                    lang = lang.split('-')[0];
+                    if (render.langs.indexOf(lang) === -1) {
+                        lang = 'zh-CN';
+                    }
+                }
+                render.lang = lang;
                 var match = render.parseHash();
                 if (match.length) {
-                    render.lang = match[0];
                     render.type = match[1];
                     render.slug = match[2];
                     render.p = parseInt(match[3] || 1);
                     render.q = decodeURIComponent(match[4] || '');
                     render.anchor = match[5] || '';
-                    render.setItem('multiBlogConfig', { lang: render.lang, type: render.type, slug: render.slug, p: render.p, q: encodeURIComponent(render.q), anchor: render.anchor });
-                    render.beforeSend();
-                    var t = new Date();
-                    var y = t.getFullYear() + '';
-                    var m = ('0' + (t.getMonth() + 1)).slice(-2);
-                    var d = ('0' + (t.getDate() + 1)).slice(-2); // +1 day
-                    if (render.cache[render.lang] && render.cache[render.lang].expires < new Date(y + '-' + m + '-' + d).getTime()) {
-                        render.success(render.cache[render.lang].datas);
-                    } else {
-                        render.ajax('GET', render.api + '/static/upload/json/' + (render.lang.match(/^zh-/) ? 'zh-CN' : render.lang) + '.json', { token: '' }, render.success, render.fail);
-                    }
+                    if (render.lang != match[0]) location.hash = '#' + render.route();
+                    render.setConfig();
                 } else {
-                    var config = render.getItem('multiBlogConfig') || {};
-                    render.lang = config.lang || navigator.language || navigator.userLanguage || 'zh-CN';
                     render.type = config.type || 'index';
                     render.slug = config.slug || 'i';
                     render.p = parseInt(config.p || 1);
@@ -365,13 +365,33 @@
                     render.anchor = config.anchor || '';
                     location.hash = '#'+ render.route();
                 }
+                var t = new Date();
+                var y = t.getFullYear() + '';
+                var m = ('0' + (t.getMonth() + 1)).slice(-2);
+                var d = ('0' + (t.getDate() + 1)).slice(-2); // +1 day
+                render.beforeSend();
+                if (render.cache[render.lang] && render.cache[render.lang].expires < new Date(y + '-' + m + '-' + d).getTime()) {
+                    render.success(render.cache[render.lang].datas);
+                } else {
+                    render.ajax('GET', render.api + '/static/upload/json/' + (render.lang.match(/^zh-/) ? 'zh-CN' : render.lang) + '.json', { token: '' }, render.success, render.fail);
+                }
+            },
+
+            // 获取设置
+            getConfig: function() {
+                return render.getItem('multiBlogConfig');
+            },
+
+            // 存储设置
+            setConfig: function(lang, type, slug, p, q, anchor) {
+                render.setItem('multiBlogConfig', { lang: lang || render.lang, type: type || render.type, slug: slug || render.slug, p: p || render.p, q: encodeURIComponent(q || '') || encodeURIComponent(render.q), anchor: anchor || render.anchor });
             },
 
             // 本地存储
             getItem: function (key, type) {
-                if (!type && typeof window.localStorage === 'undefined') return false;
-                if (!!type && typeof window.sessionStorage === 'undefined') return false;
-                var value = !type ? localStorage.getItem(key) : sessionStorage.getItem(key);
+                var storage = !type ? 'localStorage' : 'sessionStorage';
+                if (!window[storage] || 'object' != typeof window[storage]) return false;
+                var value = window[storage].getItem(key);
                 try {
                     return JSON.parse(value)
                 } catch (e) {
@@ -379,22 +399,22 @@
                 }
             },
             setItem: function (key, value, type) {
-                if (!type && typeof window.localStorage === 'undefined') return false;
-                if (!!type && typeof window.sessionStorage === 'undefined') return false;
+                var storage = !type ? 'localStorage' : 'sessionStorage';
+                if (!window[storage] || 'object' != typeof window[storage]) return false;
                 try {
                     if (typeof value === 'object') {
                         value = JSON.stringify(value);
                     }
-                    !type ? localStorage.setItem(key, value) : sessionStorage.setItem(key, value);
+                    window[storage].setItem(key, value);
                 } catch (e) {
                     return false;
                 }
             },
             removeItem: function (key, type) {
-                if (!type && typeof window.localStorage === 'undefined') return false;
-                if (!!type && typeof window.sessionStorage === 'undefined') return false;
+                var storage = !type ? 'localStorage' : 'sessionStorage';
+                if (!window[storage] || 'object' != typeof window[storage]) return false;
                 try {
-                    !type ? localStorage.removeItem(key) : sessionStorage.removeItem(key);
+                    window[storage].removeItem(key);
                 } catch (e) {
                     return false;
                 }
@@ -420,7 +440,7 @@
                 var hash = location.hash.replace('#', '');
                 var lang = 'zh-CN';
                 var match;
-                if (match = hash.match(/^\/(co|gn|rw|ha|no|af|yo|en|gom|la|ne|fr|cs|haw|ka|ru|zh-CN|fa|bho|hi|be|sw|is|yi|ak|ga|gu|km|sk|iw|kn|hu|ta|ar|bn|az|sm|su|da|sn|bm|lt|vi|mt|tk|as|ca|si|ceb|gd|sa|pl|gl|lv|uk|tt|cy|ja|tl|ay|lo|te|ro|ht|doi|sv|mai|th|hy|my|ps|hmn|dv|zh-TW|lb|sd|ku|tr|mk|bg|ms|lg|mr|et|ml|de|sl|ur|pt|ig|ckb|om|el|es|fy|so|am|ny|pa|eu|it|sq|ko|tg|fi|ky|ee|hr|qu|bs|mi|or|ti|kk|nl|kri|ln|mg|mn|lus|xh|zu|sr|nso|st|eo|mni-Mtei|ug|uz|ilo|id|jw|ts)\//)) {
+                if (match = hash.match(new RegExp('^/(' + render.langs.join('|') + ')/'))) {
                     lang = match[1];
                     hash = hash.replace(new RegExp('^/'+ match[1] +'/'), '/');
                 }
@@ -503,7 +523,10 @@
                 ((e.target.tagName === 'A' || e.target.tagName === 'I') && (e.target.id === 'btn-favorite' || e.target.parentNode.id === 'btn-favorite')) && render.favorite();
                 // language
                 if ((e.target.tagName === 'DD' || e.target.tagName === 'A') && (e.target.id === 'en' || e.target.parentNode.id === 'en' || e.target.id.match(/^zh-(CN|TW)$/) || e.target.parentNode.id.match(/^zh-(CN|TW)$/))) {
-                    location.hash = '#'+ render.route(e.target.id || e.target.parentNode.id);
+                    render.setConfig(e.target.id || e.target.parentNode.id);
+                    setTimeout(function() {
+                        location.hash = '#'+ render.route(e.target.id || e.target.parentNode.id);
+                    });
                 }
                 // to top
                 e.target.tagName === 'A' && e.target.id === 'top' && render.top();
@@ -513,7 +536,10 @@
             change: function(e) {
                 // Language select
                 if (e.target.tagName === 'SELECT' && e.target.id === 'lang') {
-                    location.hash = '#'+ render.route(e.target.value);
+                    render.setConfig(e.target.value);
+                    setTimeout(function() {
+                        location.hash = '#'+ render.route(e.target.value);
+                    });
                 }
                 // pageNum jumpTo
                 if (e.target.tagName === 'SELECT' && e.target.id === 'jumpTo') {
@@ -660,14 +686,12 @@
                 render.type != 'index' && arr.push('\t<div id="title">'+ render.crumbs(data).map(function(item, i) {
                     return item.link == undefined ? item.name : '<a href="#'+ item.link +'" title="'+ item.name +'">'+ item.name +'</a>';
                 }).join(' > ') +'</div>\n');
-                if (['index', 'search'].indexOf(render.type) !== -1 && render.slug != 'i') {
-                    arr.push(render.err404(data));
+                if (render.type == 'detail' || render.type == 'page') {
+                    arr.push(render[render.type](data));
+                } else if (['index', 'category', 'tag', 'search'].indexOf(render.type) !== -1) {
+                    arr.push(render.archive(data));
                 } else {
-                    if (render.type == 'detail' || render.type == 'page') {
-                        arr.push(render[render.type](data));
-                    } else {
-                        arr.push(render.archive(data));
-                    }
+                    arr.push(render.err404());
                 }
                 arr.push('</div>\n');
                 return arr.join('');
@@ -821,7 +845,7 @@
                 }
                 // page 404
                 if (render.type !== 'index' && render.slug !== 'i' && parent.length == 0) {
-                    parent.unshift({ name: 'Page not found' });
+                    parent.unshift({ name: (data.localize && data.localize.page_not_found ? data.localize.page_not_found : 'Page not found') });
                 }
                 // Home page
                 parent.push({ name: data.setting.webName });
@@ -892,7 +916,7 @@
                 });
                 // page 404
                 if (render.type !== 'index' && render.slug !== 'i' && parent.length == 0) {
-                    parent.unshift({ name: 'Page not found' });
+                    parent.unshift({ name: (data.localize && data.localize.page_not_found ? data.localize.page_not_found : 'Page not found') });
                 }
                 // breadcrumbs
                 parent.push({ name: data.localize && data.localize.home ? data.localize.home : 'Home', link: render.route(render.lang, 'index', 'i', 1, '', '') });
@@ -1356,10 +1380,10 @@
             info: function (title, msg) {
                 var arr = [];
                 arr.push('<div id="info">\n');
-                arr.push('\t<h2>'+ (title ? title : 'Page Not Found') +'</h2>\n');
+                arr.push('\t<h2>'+ (title || 'Page not found') +'</h2>\n');
                 arr.push('</div>');
                 arr.push('<div class="post">\n');
-                arr.push('\t<p>'+ (msg ? msg : 'Sorry, The page you are looking for cannot be found!') +'</p>\n');
+                arr.push('\t<p>'+ (msg || 'Sorry, The page you are looking for cannot be found!') +'</p>\n');
                 arr.push('</div>\n');
                 return arr.join('');
             },
