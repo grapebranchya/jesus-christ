@@ -1089,7 +1089,7 @@
                             arr.push('\t\t\t\t\t\t</div>\n');
                             arr.push('\t\t\t\t\t\t<div class="col-sm-10 col-md-10">\n');
                             arr.push('\t\t\t\t\t\t\t<h1 style="margin-top: 0;">' + (items[0] && items[0].name ? items[0].name : (data.localize && data.localize.uncategoried ? data.localize.uncategoried : '未分类')) + ' <span class="label label-info">' + (items.length ? render.trees(data.categories, items[0].id, 0).reduce(function(p, n) {
-                                return p + n.num;
+                                return parseInt(p) + parseInt(n.num);
                             }, items[0].num) : 0) + ' ' + (data.localize && data.localize.articles ? data.localize.articles : '篇文章') + '</span></h1>\n');
                             arr.push('\t\t\t\t\t\t\t<p class="well well-sm">' + (items[0] && items[0].description ? items[0].description.replace(/<[^>]*>/g, ' ') : (data.localize && data.localize.no_description ? data.localize.no_description : '还没有描述信息')) + '</p>\n');
                             arr.push('\t\t\t\t\t\t</div>\n');
