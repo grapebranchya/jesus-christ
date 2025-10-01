@@ -338,7 +338,8 @@
             // hash router
             router: function() {
                 var config = render.getConfig() || {};
-                var lang = config.lang || navigator.language || navigator.userLanguage || 'zh-CN'
+                var match = render.parseHash();
+                var lang = config.lang || match[0] || navigator.language || navigator.userLanguage || 'zh-CN';
                 if (/-cn|sg/i.test(lang)) lang = 'zh-CN';
                 if (/-tw|hk|mo/i.test(lang)) lang = 'zh-TW';
                 if (render.langs.indexOf(lang) === -1) {
