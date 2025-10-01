@@ -355,7 +355,7 @@
                     render.p = parseInt(match[3] || 1);
                     render.q = decodeURIComponent(match[4] || '');
                     render.anchor = match[5] || '';
-                    if (render.lang != match[0]) location.hash = '#' + render.route();
+                    if (typeof window.localStorage === 'object' && render.lang != match[0]) location.hash = '#' + render.route();
                     render.setConfig();
                 } else {
                     render.type = config.type || 'index';
