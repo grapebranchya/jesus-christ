@@ -59,7 +59,7 @@
             $.support.cors = true;
             var render = {
                 api: document.domain.match(/localhost|127.0.0.1/i) ? '.' : 'https://jesus-christ.pages.dev',
-                token: window.localStorage && typeof window.localStorage == 'object' ? localStorage.getItem('webToken') || '' : '',
+                token: typeof window.localStorage === 'object' ? localStorage.getItem('webToken') || '' : '',
                 langs: ['co', 'gn', 'rw', 'ha', 'no', 'af', 'yo', 'en', 'gom', 'la', 'ne', 'fr', 'cs', 'haw', 'ka', 'ru', 'zh-CN', 'fa', 'bho', 'hi', 'be', 'sw', 'is', 'yi', 'ak', 'ga', 'gu', 'km', 'sk', 'iw', 'kn', 'hu', 'ta', 'ar', 'bn', 'az', 'sm', 'su', 'da', 'sn', 'bm', 'lt', 'vi', 'mt', 'tk', 'as', 'ca', 'si', 'ceb', 'gd', 'sa', 'pl', 'gl', 'lv', 'uk', 'tt', 'cy', 'ja', 'tl', 'ay', 'lo', 'te', 'ro', 'ht', 'doi', 'sv', 'mai', 'th', 'hy', 'my', 'ps', 'hmn', 'dv', 'zh-TW', 'lb', 'sd', 'ku', 'tr', 'mk', 'bg', 'ms', 'lg', 'mr', 'et', 'ml', 'de', 'sl', 'ur', 'pt', 'ig', 'ckb', 'om', 'el', 'es', 'fy', 'so', 'am', 'ny', 'pa', 'eu', 'it', 'sq', 'ko', 'tg', 'fi', 'ky', 'ee', 'hr', 'qu', 'bs', 'mi', 'or', 'ti', 'kk', 'nl', 'kri', 'ln', 'mg', 'mn', 'lus', 'xh', 'zu', 'sr', 'nso', 'st', 'eo', 'mni-Mtei', 'ug', 'uz', 'ilo', 'id', 'jw', 'ts'],
                 login: 0,
                 timer: null,
