@@ -503,7 +503,7 @@
                         var obj = data[render.type == 'detail' ? 'articles' : 'categories'].filter(function(elem, i) {
                                 return elem.slug == render.slug;
                             })[0];
-                        var cat_id = obj ? obj[render.type == 'detail' ? 'category_id' : 'id'] : 0;
+                        var cat_id = obj ? parseInt(obj[render.type == 'detail' ? 'category_id' : 'id']) : 0;
                         arr.push('\t<div class="panel panel-default" id="panel-affix">\n');
                         arr.push('\t\t<div class="panel-heading">\n');
                         obj = data.categories.filter(function(item, i) {
@@ -529,11 +529,11 @@
                         arr.push('\t\t\t\t<div class="col-md-12">\n');
                         arr.push('\t\t\t\t\t<div class="list-group">\n');
                         var cat_ids = render.trees(data.categories, cat_id || -1, 0).map(function(item, i) {
-                            return item.id;
+                            return parseInt(item.id);
                         });
-                        cat_ids.unshift(cat_id);
+                        cat_id && cat_ids.unshift(cat_id);
                         articles = data.articles.filter(function(item, i) {
-                            return cat_ids.indexOf(item.category_id) !== -1;
+                            return cat_ids.indexOf(parseInt(item.category_id)) !== -1;
                         });
                         if (articles.length) {
                             articles.forEach(function (item, i) {
@@ -571,8 +571,8 @@
                         if (comments.length) {
                             var obj = render.format(data.articles.filter(function(item, i) {
                                 return comments.map(function(elem, i) {
-                                    return elem.article_id;
-                                }).indexOf(item.id) !== -1;
+                                    return parseInt(elem.article_id);
+                                }).indexOf(parseInt(item.id)) !== -1;
                             }), 'id');
                             var user = render.format(data.users, 'username');
                             comments.forEach(function (item, i) {
@@ -1049,12 +1049,12 @@
                         return render.slug == item.slug;
                     });
                     if (items.length) {
-                        cat_ids = render.trees(data.categories, items[0].id, 0).map(function(item, i) {
-                            return item.id;
+                        cat_ids = render.trees(data.categories, parseInt(items[0].id), 0).map(function(item, i) {
+                            return parseInt(item.id);
                         });
-                        cat_ids.unshift(items[0].id);
+                        cat_ids.unshift(parseInt(items[0].id));
                         articles = data.articles.filter(function(item, i) {
-                            return cat_ids.indexOf(item.category_id) !== -1;
+                            return cat_ids.indexOf(parseInt(item.category_id)) !== -1;
                         });
                         arr.push('<div class="container">\n');
                         arr.push('\t<div class="row">\n');
@@ -1088,9 +1088,9 @@
                             arr.push('\t\t\t\t\t\t\t<img class="img-thumbnail" style="width:100%;max-height:100px;background-color:#f1f1f1;background-image:none;" src="' + (items[0] && items[0].cover ? items[0].cover.replace(/^.*?(\/static\/.+)$/i, render.cdn_url + '$1') : 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'32\' height=\'32\' viewBox=\'0 0 32 32\'%3E%3Cpath d=\'M18.007 9.040l7.585-2.545 6.362 18.962-7.585 2.545zM0 28h8v-22h-8v22zM2 10h4v2h-4v-2zM10 28h8v-22h-8v22zM12 10h4v2h-4v-2z\'%3E%3C/path%3E%3C/svg%3E%0A') + '" alt="' + (items[0] && items[0].name ? items[0].name : (data.localize && data.localize.uncategoried ? data.localize.uncategoried : '未分类')) + '" title="' + (data.category && data.category.name ? data.category.name : (data.localize && data.localize.uncategoried ? data.localize.uncategoried : '未分类')) + '" />\n');
                             arr.push('\t\t\t\t\t\t</div>\n');
                             arr.push('\t\t\t\t\t\t<div class="col-sm-10 col-md-10">\n');
-                            arr.push('\t\t\t\t\t\t\t<h1 style="margin-top: 0;">' + (items[0] && items[0].name ? items[0].name : (data.localize && data.localize.uncategoried ? data.localize.uncategoried : '未分类')) + ' <span class="label label-info">' + (items.length ? render.trees(data.categories, items[0].id, 0).reduce(function(p, n) {
+                            arr.push('\t\t\t\t\t\t\t<h1 style="margin-top: 0;">' + (items[0] && items[0].name ? items[0].name : (data.localize && data.localize.uncategoried ? data.localize.uncategoried : '未分类')) + ' <span class="label label-info">' + (items.length ? render.trees(data.categories, parseInt(items[0].id), 0).reduce(function(p, n) {
                                 return parseInt(p) + parseInt(n.num);
-                            }, items[0].num) : 0) + ' ' + (data.localize && data.localize.articles ? data.localize.articles : '篇文章') + '</span></h1>\n');
+                            }, parseInt(items[0].num)) : 0) + ' ' + (data.localize && data.localize.articles ? data.localize.articles : '篇文章') + '</span></h1>\n');
                             arr.push('\t\t\t\t\t\t\t<p class="well well-sm">' + (items[0] && items[0].description ? items[0].description.replace(/<[^>]*>/g, ' ') : (data.localize && data.localize.no_description ? data.localize.no_description : '还没有描述信息')) + '</p>\n');
                             arr.push('\t\t\t\t\t\t</div>\n');
                             arr.push('\t\t\t\t\t</div>\n');
@@ -1390,7 +1390,7 @@
                             data.tags.filter(function(el) {
                                 return tag_ids.map(function(ele) {
                                     return parseInt(ele);
-                                }).indexOf(el.id) !== -1;
+                                }).indexOf(parseInt(el.id)) !== -1;
                             }).forEach(function(item, i) {
                                 arr.push((i > 0 ? ', ' : '') + '<a href="#' + render.route(render.lang, 'tag', item.slug, 1, '', '') + '" title="' + item.name + '">' + item.name + '</a>');
                             });
@@ -1400,10 +1400,12 @@
                         // 相关文章
                         if (tag_ids.length) {
                             var related = data.articles.filter(function(item, i) {
-                                var rel_ids = JSON.parse(item.tag_ids || '[]');
+                                var rel_ids = JSON.parse(item.tag_ids || '[]').map(function(item, i) {
+                                    return parseInt(item);
+                                });
                                 var condition = item.id != article.id;
                                 for (i = 0; i < tag_ids.length; i++) {
-                                    condition = condition && rel_ids.indexOf(tag_ids[i]) !== -1;
+                                    condition = condition && rel_ids.indexOf(parseInt(tag_ids[i])) !== -1;
                                 }
                                 return condition;
                             }).slice(0, data.setting.related_num);
@@ -1458,7 +1460,7 @@
                             arr.push('\t\t\t\t\t\t\t<div class="form-group" style="position: relative;text-align: right;">\n');
                             arr.push('\t\t\t\t\t\t\t\t<input type="hidden" name="post_id" value="' + article.id + '" />\n');
                             arr.push('\t\t\t\t\t\t\t\t<input type="hidden" name="pid" value="0">\n');
-                            if (render.login != 0 && render.login.auth_ids.indexOf(88) !== -1) {
+                            if (render.login != 0 && (render.login.auth_ids.indexOf(88) !== -1 || render.login.auth_ids.indexOf('88') !== -1)) {
                                 arr.push('\t\t\t\t\t\t\t\t<input type="hidden" name="can_delete" value="1">\n');
                             } else {
                                 arr.push('\t\t\t\t\t\t\t\t<input type="hidden" name="can_delete" value="0">\n');
@@ -1491,7 +1493,7 @@
                                 // 评论内容
                                 arr.push('\t\t\t\t\t\t\t\t\t\t\t' + item.comment.replace(/<img[^>]*src=(["'])([^"']+)(["'])[^>]*>/gi, function(match, p1, p2, p3) {
                                     return '<img src='+ p1 + 'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==' + p3 +' data-src='+ p1 + p2.replace(/^.*?(\/static\/.+)$/i, render.cdn_url + '$1') + p3 +' class='+ p1 + 'img-thumbnail' + p3 +' alt='+ p1 + article.title.replace(/<[^>]*>/g, ' ') + p3 +' title='+ p1 + article.title.replace(/<[^>]*>/g, ' ') + p3 +' />';
-                                }) + (render.login != 0 && render.login.auth_ids.indexOf(88) !== -1 ? ' (<a href="javascript:;" class="delete-comment text-danger" data-id="' + item.id + '" title="' + (data.localize && data.localize.delete ? data.localize.delete : '删除') + '">' + (data.localize && data.localize.delete ? data.localize.delete : '删除') + '</a>) ' : '') + '\n');
+                                }) + (render.login != 0 && (render.login.auth_ids.indexOf(88) !== -1 || render.login.auth_ids.indexOf('88') !== -1) ? ' (<a href="javascript:;" class="delete-comment text-danger" data-id="' + item.id + '" title="' + (data.localize && data.localize.delete ? data.localize.delete : '删除') + '">' + (data.localize && data.localize.delete ? data.localize.delete : '删除') + '</a>) ' : '') + '\n');
                                 arr.push('\t\t\t\t\t\t\t\t\t\t\t<div class="clearfix" style="margin: 10px 0;">\n');
                                 arr.push('\t\t\t\t\t\t\t\t\t\t\t\t<button type="button" data-id="' + item.id + '" class="pull-right btn btn-success btn-reply btn-sm media-right">\n');
                                 arr.push('\t\t\t\t\t\t\t\t\t\t\t\t\t<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> ' + (data.localize && data.localize.reply ? data.localize.reply : '回复') + '\n');
@@ -1508,7 +1510,7 @@
                                     arr.push('\t\t\t\t\t\t\t\t\t\t\t\t\t<h4 class="media-heading">' + (user[reply.author] && user[reply.author].nickname ? user[reply.author].nickname : reply.author) + ' ' + (data.localize && data.localize.reply ? data.localize.reply : '回复') + ': </h4>\n');
                                     arr.push('\t\t\t\t\t\t\t\t\t\t\t\t\t' + reply.comment.replace(/<img[^>]*src=(["'])([^"']+)(["'])[^>]*>/gi, function(match, p1, p2, p3) {
                                         return '<img src='+ p1 + 'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==' + p3 +' data-src='+ p1 + p2.replace(/^.*?(\/static\/.+)$/i, render.cdn_url + '$1') + p3 +' class='+ p1 + 'img-thumbnail' + p3 +' alt='+ p1 + article.title.replace(/<[^>]*>/g, ' ') + p3 +' title='+ p1 + article.title.replace(/<[^>]*>/g, ' ') + p3 +' />';
-                                    }) + (render.login != 0 && render.login.auth_ids.indexOf(88) !== -1 ? ' (<a href="javascript:;" class="delete-comment text-danger" data-id="' + reply.id + '" title="' + (data.localize && data.localize.delete ? data.localize.delete : '删除') + '">' + (data.localize && data.localize.delete ? data.localize.delete : '删除') + '</a>) ' : '') + '\n');
+                                    }) + (render.login != 0 && (render.login.auth_ids.indexOf(88) !== -1 || render.login.auth_ids.indexOf('88') !== -1) ? ' (<a href="javascript:;" class="delete-comment text-danger" data-id="' + reply.id + '" title="' + (data.localize && data.localize.delete ? data.localize.delete : '删除') + '">' + (data.localize && data.localize.delete ? data.localize.delete : '删除') + '</a>) ' : '') + '\n');
                                     arr.push('\t\t\t\t\t\t\t\t\t\t\t\t</div>\n');
                                     arr.push('\t\t\t\t\t\t\t\t\t\t\t</div>\n');
                                     // 回复分页
@@ -1557,15 +1559,15 @@
                     var page = data.pages.filter(function(item, i) {
                         return item.slug == render.slug;
                     })[0];
-                    // 文章收藏或点赞列表
-                    if (page && page.slug.match(/^page-/) && render[page.slug.replace('-', '_')]) {
-                        arr.push(render[page.slug.replace('-', '_')](data, page));
-                    } else {
-                        if (page) {
-                            var childs = render.trees(data.pages, page ? page.id : -1, 0);
+                    if (page) {
+                        // 文章收藏或点赞列表
+                        if (page.slug.match(/^page-/) && render[page.slug.replace('-', '_')]) {
+                            arr.push(render[page.slug.replace('-', '_')](data, page));
+                        } else {
+                            var childs = render.trees(data.pages, parseInt(page.id), 0);
                             arr.push('<div class="container">\n');
                             // 宽屏页面
-                            if (page && page.is_full == '1') {
+                            if (page.is_full == '1') {
                                 // 子宽屏页
                                 if (childs.length) {
                                     arr.push(render.list_page(childs));
@@ -1613,11 +1615,11 @@
                                 arr.push(render.sidebar(data));
                                 arr.push('\t</div>\n');
                             }
-                        } else {
-                            var title = data.localize && data.localize.page_not_found ? data.localize.page_not_found : '页面未找到';
-                            var msg = data.localize && data.localize.sorry_not_found ? data.localize.sorry_not_found : '抱歉，你要访问的页面不存在！'
-                            arr.push(render.info(title, msg));
                         }
+                    } else {
+                        var title = data.localize && data.localize.page_not_found ? data.localize.page_not_found : '页面未找到';
+                        var msg = data.localize && data.localize.sorry_not_found ? data.localize.sorry_not_found : '抱歉，你要访问的页面不存在！'
+                        arr.push(render.info(title, msg));
                     }
                     arr.push('</div>\n');
                     return arr.join('');
@@ -2389,7 +2391,7 @@
                             return parseInt(item.id);
                         });
                         var articles = data.articles.filter(function(item, i) {
-                            return ids.indexOf(item.id) !== -1;
+                            return ids.indexOf(parseInt(item.id)) !== -1;
                         });
                         if (articles.length) {
                             var arr = [];

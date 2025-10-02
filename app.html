@@ -965,10 +965,14 @@
                         return '<img src='+ p1 + 'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==' + p3 +' data-src='+ p1 + p2.replace(/^.*?(\/static\/.+)$/i, render.cdn_url + '$1') + p3 +' class='+ p1 + 'img-thumbnail' + p3 +' alt='+ p1 + article.title.replace(/<[^>]*>/g, ' ') + p3 +' title='+ p1 + article.title.replace(/<[^>]*>/g, ' ') + p3 +' />';
                     }) +'</div>\n');
                     // related posts
-                    var tag_ids = JSON.parse(article.tag_ids || '[]');
+                    var tag_ids = JSON.parse(article.tag_ids || '[]').map(function(item, i) {
+                        return parseInt(item);
+                    });
                     if (tag_ids.length) {
                         var related = data.articles.filter(function(item, i) {
-                            var rel_ids = JSON.parse(item.tag_ids || '[]');
+                            var rel_ids = JSON.parse(item.tag_ids || '[]').map(function(elem, i) {
+                                return parseInt(elem);
+                            });
                             var condition = item.id != article.id;
                             for (i = 0; i < tag_ids.length; i++) {
                                 condition = condition && rel_ids.indexOf(tag_ids[i]) !== -1;
@@ -1015,7 +1019,7 @@
                         data.tags.filter(function(el) {
                             return tag_ids.map(function(ele) {
                                 return parseInt(ele);
-                            }).indexOf(el.id) !== -1;
+                            }).indexOf(parseInt(el.id)) !== -1;
                         }).forEach(function(item, i) {
                             arr.push((i > 0 ? ', ' : '') + '<a href="#'+ render.route(render.lang, 'tag', item.slug, 1, '', '') +'" title="'+ item.name +'">'+ item.name +'</a>');
                         });
@@ -1095,12 +1099,12 @@
                         return item.slug == render.slug;
                     });
                     if (items.length) {
-                        cat_ids = render.trees(data.categories, items[0].id, 0).map(function(item, i) {
-                            return item.id;
+                        cat_ids = render.trees(data.categories, parseInt(items[0].id), 0).map(function(item, i) {
+                            return parseInt(item.id);
                         });
-                        cat_ids.unshift(items[0].id);
+                        cat_ids.unshift(parseInt(items[0].id));
                         articles = data.articles.filter(function(item, i) {
-                            return cat_ids.indexOf(item.category_id) !== -1;
+                            return cat_ids.indexOf(parseInt(item.category_id)) !== -1;
                         });
                     }
                 }
@@ -2000,7 +2004,7 @@
                         return parseInt(item.id);
                     });
                     var articles = data.articles.filter(function(item, i) {
-                        return ids.indexOf(item.id) !== -1;
+                        return ids.indexOf(parseInt(item.id)) !== -1;
                     });
                     if (articles.length) {
                         var arr = [];
