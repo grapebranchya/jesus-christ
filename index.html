@@ -1751,6 +1751,11 @@
                     render.timer = null;
                     render.affixTop = 0;
                     render.docHeight = 0;
+                    // 解绑事件
+                    $(window).off('click');
+                    $(window).off('change');
+                    $(window).off('submit');
+                    $(window).off('scroll');
                     // 设置语言
                     $('html').attr('lang', render.lang);
                     render.loader();
@@ -1758,6 +1763,11 @@
 
                 // Ajax请求错误
                 error: function (XMLHttpRequest, statusText) {
+                    // 解绑事件
+                    $(window).off('click');
+                    $(window).off('change');
+                    $(window).off('submit');
+                    $(window).off('scroll');
                     if (XMLHttpRequest.responseText && XMLHttpRequest.responseText.match(/404 Not found/i)) {
                         return $('#app').html(render.err404());
                     }
@@ -3314,10 +3324,10 @@
                     }
 
                     // 绑定事件
-                    $(window).off('click', evt_click).on('click', evt_click);
-                    $(window).off('change', evt_change).on('change', evt_change);
-                    $(window).off('submit', evt_submit).on('submit', evt_submit);
-                    $(window).off('scroll', evt_scroll).on('scroll', evt_scroll);
+                    $(window).on('click', evt_click);
+                    $(window).on('change', evt_change);
+                    $(window).on('submit', evt_submit);
+                    $(window).on('scroll', evt_scroll);
                     $('#carousel-example-generic').carousel('cycle');
                     evt_scroll();
                 }
