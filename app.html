@@ -1114,7 +1114,7 @@
                             var tag_ids = JSON.parse(item.tag_ids || '[]').map(function(item, i) {
                                 return parseInt(item);
                             });
-                            return tag_ids.indexOf(items[0].id) !== -1;
+                            return tag_ids.indexOf(parseInt(items[0].id)) !== -1;
                         });
                     }
                 }
@@ -1252,7 +1252,7 @@
                         var match = item.content.match(/<img[^>]*src=["']([^"']*)["'][^>]*>/i);
                         item.cover = (item.cover || (match ? match[1] : '')).replace(/^.*?(\/static\/.+)$/i, render.cdn_url + '$1');
                         arr.push('\t<div class="post">\n');
-                        arr.push('\t\t<a href="#'+ render.route(render.lang, 'detail', item.slug, 1, '', '')+'" title="'+ item.title.replace(/<[^>]*>/g, ' ') +'">\n');
+                        arr.push('\t\t<a href="#'+ render.route(render.lang, 'page', item.slug, 1, '', '')+'" title="'+ item.title.replace(/<[^>]*>/g, ' ') +'">\n');
                         arr.push('\t\t\t<h2 class="title">'+ item.title +'</h2>\n');
                         item.cover && arr.push('\t\t\t<img src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" data-src="'+ item.cover +'" alt="'+ item.title.replace(/<[^>]*>/g, ' ') +'" title="'+ item.title.replace(/<[^>]*>/g, ' ') +'" class="img-thumbnail" />\n');
                         arr.push('\t\t\t<div class="decoration">\n');

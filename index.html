@@ -1124,7 +1124,7 @@
                             var tag_ids = JSON.parse(item.tag_ids || '[]').map(function(item, i) {
                                 return parseInt(item);
                             });
-                            return tag_ids.indexOf(items[0].id) !== -1;
+                            return tag_ids.indexOf(parseInt(items[0].id)) !== -1;
                         });
                         arr.push('<div class="container">\n');
                         arr.push('\t<div class="row">\n');
