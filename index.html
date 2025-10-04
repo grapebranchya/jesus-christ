@@ -228,7 +228,7 @@
                 // 路由到页面
                 success: function (res) {
                     if (!res || res.code) {
-                        return $('#app').html(render.info('Error', 'Message: ' + res.msg));
+                        return $('#app').html(render.info('Error', 'Message: ' + (res ? res.msg : 'Request Error!')));
                     }
                     // cache data
                     render.cache[render.lang] = {
@@ -241,7 +241,7 @@
                 // dispatch datas
                 dispatch: function(data) {
                     render.site_url = document.domain.match(/localhost|127.0.0.1/i) ? '.' : (data.setting.site ? data.setting.site : data.site_url);
-                    render.cdn_url = document.domain.match(/localhost|127.0.0.1/i) ? '.' : (data.setting.static ? data.setting.static : render.site_url);
+                    render.cdn_url = document.domain.match(/localhost|127.0.0.1/i) ? '.' : (document.domain.match(/\w.+.pages.dev$/i) ? render.api : (data.setting.static ? data.setting.static : render.site_url));
                     $('head>title').text(render.title(data));
                     $('head>link[rel*="icon"]').each(function(i, elem) {
                         if (data.setting.webLogo) elem.href = data.setting.webLogo.replace(/^.*?(\/static\/.+)$/, render.cdn_url + '$1');

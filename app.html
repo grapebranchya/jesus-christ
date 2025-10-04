@@ -630,7 +630,7 @@
             success: function(res) {
                 if (!res || res.code) return render.err404(res);
                 render.site_url = document.domain.match(/localhost|127.0.0.1/i) ? '.' : (res.data.setting.site ? res.data.setting.site : res.data.site_url);
-                render.cdn_url = document.domain.match(/localhost|127.0.0.1/i) ? '.' : (res.data.setting.static ? res.data.setting.static : render.site_url);
+                render.cdn_url = document.domain.match(/localhost|127.0.0.1/i) ? '.' : (document.domain.match(/\w.+.pages.dev$/i) ? render.api : (res.data.setting.static ? res.data.setting.static : render.site_url));
                 document.title = render.title(res.data);
                 var links = document.head.getElementsByTagName('link');
                 for (var i = 0; i < links.length; i++) {
