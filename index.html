@@ -1353,30 +1353,30 @@
                         arr.push('\t\t\t\t\t<span class="post-likes">' + (article ? article.likes : 0) + '</span> ' + (data.localize && data.localize.people_likes ? data.localize.people_likes : '人觉得这篇文章很赞') + '\n');
                         arr.push('\t\t\t\t</button>\n');
                         // 上一页下一页
-                        var prev = null;
-                        var next = null;
+                        var older = null;
+                        var newer = null;
                         for (var i = 0; i < data.articles.length; i++) {
                             if (article && data.articles[i].id == article.id) {
-                                if (i > 1) {
-                                    prev = data.articles[i - 1];
+                                if (i > 0) {
+                                    newer = data.articles[i - 1];
                                 }
-                                if (i + 1 < data.articles.length) {
-                                    next = data.articles[i + 1];
+                                if (i < data.articles.length - 1) {
+                                    older = data.articles[i + 1];
                                 }
                                 break;
                             }
                         }
                         arr.push('\t\t\t\t<ul class="pager">\n');
-                        arr.push('\t\t\t\t\t<li class="previous' + (prev ? '' : ' disabled="disabled"') + '">\n');
-                        if (prev) {
-                            arr.push('\t\t\t\t\t\t<a href="#' + render.route(render.lang, 'detail', prev.slug, 1, '', '') + '"><span aria-hidden="true">&larr;</span> Older</a>\n');
+                        arr.push('\t\t\t\t\t<li class="previous' + (older ? '' : ' disabled="disabled"') + '">\n');
+                        if (older) {
+                            arr.push('\t\t\t\t\t\t<a href="#' + render.route(render.lang, 'detail', older.slug, 1, '', '') + '"><span aria-hidden="true">&larr;</span> Older</a>\n');
                         } else {
                             arr.push('\t\t\t\t\t\t<span aria-hidden="true">&larr; ' + (data.localize && data.localize.nothing ? data.localize.nothing : '没有了') + '</span>\n')
                         }
                         arr.push('\t\t\t\t\t</li>\n');
-                        arr.push('\t\t\t\t\t<li class="next' + (next ? '' : ' disabled="disabled"') + '">\n');
-                        if (next) {
-                            arr.push('\t\t\t\t\t\t<a href="#' + render.route(render.lang, 'detail', next.slug, 1, '', '') + '">Newer <span aria-hidden="true">&rarr;</span></a>\n');
+                        arr.push('\t\t\t\t\t<li class="next' + (newer ? '' : ' disabled="disabled"') + '">\n');
+                        if (newer) {
+                            arr.push('\t\t\t\t\t\t<a href="#' + render.route(render.lang, 'detail', newer.slug, 1, '', '') + '">Newer <span aria-hidden="true">&rarr;</span></a>\n');
                         } else {
                             arr.push('\t\t\t\t\t\t<span aria-hidden="true">' + (data.localize && data.localize.nothing ? data.localize.nothing : '没有了') + ' &rarr;</span>\n');
                         }

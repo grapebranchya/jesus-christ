@@ -997,20 +997,20 @@
                     arr.push('\t\t\t<i class="icon icon-heart muted"></i> <span id="post-favorites">0</span> ' + (data.localize && data.localize.articles ? data.localize.articles : 'Articles') + '\n');
                     arr.push('\t\t</div>');
                     // prev next post
-                    var prev = null;
-                    var next = null;
+                    var older = null;
+                    var newer = null;
                     for (var i = 0; i < data.articles.length; i++) {
                         if (data.articles[i].id == article.id) {
-                            if (i > 1) {
-                                prev = data.articles[i - 1];
+                            if (i > 0) {
+                                newer = data.articles[i - 1];
                             }
-                            if (i + 1 < data.articles.length) {
-                                next = data.articles[i + 1];
+                            if (i < data.articles.length - 1) {
+                                older = data.articles[i + 1];
                             }
                             break;
                         }
                     }
-                    arr.push('\t<p><a href="'+ (next ? '#'+ render.route(render.lang, 'detail', next.slug, 1, '', '') : 'javascript:;') +'" class="pn fl"'+ (next ? '' : ' style="cursor:not-allowed"') +'>&larr; '+ (next ? 'Older' : (data.localize && data.localize.nothing ? data.localize.nothing : '没有了')) +'</a><a href="'+ (prev ? '#'+ render.route(render.lang, 'detail', prev.slug, 1, '', '') : 'javascript:;') +'" class="pn fr"'+ (prev ? '' : ' style="cursor:not-allowed"') +'>&rarr; '+ (prev ? 'Newer' : (data.localize && data.localize.nothing ? data.localize.nothing : '没有了')) +'</a></p>\n');
+                    arr.push('\t<p><a href="'+ (older ? '#'+ render.route(render.lang, 'detail', older.slug, 1, '', '') : 'javascript:;') +'" class="pn fl"'+ (older ? '' : ' style="cursor:not-allowed"') +'>&larr; '+ (older ? 'Older' : (data.localize && data.localize.nothing ? data.localize.nothing : '没有了')) +'</a><a href="'+ (newer ? '#'+ render.route(render.lang, 'detail', newer.slug, 1, '', '') : 'javascript:;') +'" class="pn fr"'+ (newer ? '' : ' style="cursor:not-allowed"') +'>&rarr; '+ (newer ? 'Newer' : (data.localize && data.localize.nothing ? data.localize.nothing : '没有了')) +'</a></p>\n');
                     arr.push('\t<div class="cl"></div>\n');
                     // post tags
                     if (tag_ids.length) {
