@@ -5,9 +5,9 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Desktop App</title>
-    <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M0 2v20h32v-20h-32zM30 20h-28v-16h28v16zM21 24h-10l-1 4-2 2h16l-2-2z'%3E%3C/path%3E%3C/svg%3E" />
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M0 2v20h32v-20h-32zM30 20h-28v-16h28v16zM21 24h-10l-1 4-2 2h16l-2-2z'%3E%3C/path%3E%3C/svg%3E" />
+    <title>Jesus Christ Desktop App</title>
+    <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='%23f00' d='M5.979 10.974v5.021h7.041v11.99h5.042v-11.99h6.958v-5.021h-6.958v-6.958h-5.042v6.958h-7.041z'%3E%3C/path%3E%3C/svg%3E%0A" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='%23f00' d='M5.979 10.974v5.021h7.041v11.99h5.042v-11.99h6.958v-5.021h-6.958v-6.958h-5.042v6.958h-7.041z'%3E%3C/path%3E%3C/svg%3E%0A" />
     <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/kindeditor@4.1.10/plugins/code/prettify.css" />
     <style type="text/css">
@@ -301,7 +301,7 @@
                     arr.push('\t\t\t\t<span class="icon-bar"></span>\n');
                     arr.push('\t\t\t\n');
                     arr.push('\t\t\t</button>\n');
-                    arr.push('\t\t\t<a class="navbar-brand" style="padding:8px 8px 8px 15px;" href="#' + render.route(render.lang, 'index', 'i', 1, '', '') + '" title="' + data.setting.webName + '">' + (data.setting.webLogo ? '<img src="' + data.setting.webLogo.replace(/^.*?(\/static\/.+)$/, render.cdn_url + '$1') + '" style="width:32px;height:auto;" alt="' + data.setting.webName + '" title="' + data.setting.webName + '" />' : data.setting.webName) + '</a>\n');
+                    arr.push('\t\t\t<a class="navbar-brand" style="padding:8px 8px 8px 15px;" href="#' + render.route(render.lang, 'index', 'i', 1, '', '') + '" title="' + data.setting.webName + '">' + (data.setting.webLogo ? '<img src="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'32\' height=\'32\' viewBox=\'0 0 32 32\'%3E%3Cpath fill=\'%23f00\' d=\'M5.979 10.974v5.021h7.041v11.99h5.042v-11.99h6.958v-5.021h-6.958v-6.958h-5.042v6.958h-7.041z\'%3E%3C/path%3E%3C/svg%3E%0A" style="width:32px;height:auto;" alt="' + data.setting.webName + '" title="' + data.setting.webName + '" />' : data.setting.webName) + '</a>\n');
                     arr.push('\t\t</div>\n');
                     arr.push('\t\t<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">\n');
                     arr.push('\t\t\t<ul class="nav navbar-nav">\n');
@@ -2776,7 +2776,7 @@
 
                         // 客户端
                         if ($(e.target).hasClass('client')) {
-                            window.open(render.site_url + (render.lang == 'zh-CN' ? '' : '/' + render.lang) + '/static/upload/Jesus_Christ.zip');
+                            window.open(render.cdn_url + '/static/upload/JesusChrist_v1.0.1.apk');
                             return false;
                         }
 

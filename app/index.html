@@ -5,9 +5,9 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mobile App</title>
-    <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M23 0h-14c-1.65 0-3 1.35-3 3v26c0 1.65 1.35 3 3 3h14c1.65 0 3-1.35 3-3v-26c0-1.65-1.35-3-3-3zM12 1.5h8v1h-8v-1zM16 30c-1.105 0-2-0.895-2-2s0.895-2 2-2 2 0.895 2 2-0.895 2-2 2zM24 24h-16v-20h16v20z'%3E%3C/path%3E%3C/svg%3E" />
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M23 0h-14c-1.65 0-3 1.35-3 3v26c0 1.65 1.35 3 3 3h14c1.65 0 3-1.35 3-3v-26c0-1.65-1.35-3-3-3zM12 1.5h8v1h-8v-1zM16 30c-1.105 0-2-0.895-2-2s0.895-2 2-2 2 0.895 2 2-0.895 2-2 2zM24 24h-16v-20h16v20z'%3E%3C/path%3E%3C/svg%3E" />
+    <title>Jesus Christ Mobile App</title>
+    <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='%23f00' d='M5.979 10.974v5.021h7.041v11.99h5.042v-11.99h6.958v-5.021h-6.958v-6.958h-5.042v6.958h-7.041z'%3E%3C/path%3E%3C/svg%3E%0A" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='%23f00' d='M5.979 10.974v5.021h7.041v11.99h5.042v-11.99h6.958v-5.021h-6.958v-6.958h-5.042v6.958h-7.041z'%3E%3C/path%3E%3C/svg%3E%0A" />
     <style type="text/css">
         html body{font:62.5% Verdana,Arial,Trebuchet MS}
         #app{position:relative;margin:0 auto}
@@ -668,7 +668,7 @@
                 var arr = [];
                 arr.push('<div id="headerwrap">\n');
                 arr.push('\t<div id="header">\n');
-                arr.push('\t\t<h1>'+ (data.setting.webLogo ? '<a href="#'+ render.route(render.lang, 'index', 'i', 1, '', '') +'"><img src="'+ data.setting.webLogo.replace(/^.*?(\/static\/.+)$/i, render.cdn_url + '$1') +'" /></a>' : '') +'<a href="#'+ render.route(render.lang, 'index', 'i', 1, '', '') +'">'+ data.setting.webName +'</a></h1>\n');
+                arr.push('\t\t<h1>'+ (data.setting.webLogo ? '<a href="#'+ render.route(render.lang, 'index', 'i', 1, '', '') +'" title="' + data.setting.webName + '"><img src="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'32\' height=\'32\' viewBox=\'0 0 32 32\'%3E%3Cpath fill=\'%23f00\' d=\'M5.979 10.974v5.021h7.041v11.99h5.042v-11.99h6.958v-5.021h-6.958v-6.958h-5.042v6.958h-7.041z\'%3E%3C/path%3E%3C/svg%3E%0A" alt="' + data.setting.webName + '" title="' + data.setting.webName + '" /></a>' : '') +'<a href="#'+ render.route(render.lang, 'index', 'i', 1, '', '') +'" title="' + data.setting.webName + '">'+ data.setting.webName +'</a></h1>\n');
                 arr.push('\t\t<ul id="top-nav">\n');
                 arr.push('\t\t\t<li><a id="shownav" href="javascript:;" title="Nav menu"><i class="icon icon-white icon-tasks"></i></a></li>\n');
                 arr.push('\t\t\t<li><a id="showsch" href="javascript:;" title="Search"><i class="icon icon-white icon-search"></i></a></li>\n');
@@ -711,7 +711,7 @@
                     });
                     arr.push('\t\t</p>\n');
                 }
-                arr.push('\t\t<p><a href="javascript:;" title="Top" id="top">↑Top</a> | <a href="'+ render.site_url + render.route() +'" title="Desktop view">Desktop view</a></p>\n');
+                arr.push('\t\t<p><a href="javascript:;" title="Top" id="top">↑Top</a> | <a href="'+ render.cdn_url + render.route() +'" title="Desktop view">Desktop view</a></p>\n');
                 arr.push('\t\t<p>&copy; 2024'+ (t > 2024 ? ' - '+ t : '') +'</p>\n');
                 arr.push('\t\t<button id="btn-top" class="invisible" type="button"><i class="icon icon-chevron-up muted"></i></button>\n')
                 arr.push('\t</div>\n');
