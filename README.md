@@ -13,8 +13,10 @@
 > 主耶稣基督里的教会，承载使命，传扬救恩（支持 133 种语言文字）静态加速版
 
 - 代码仓库
-    + https://gitee.com/grape-branch/jesus-christ.git
     + https://github.com/grapebranchya/jesus-christ.git
+
+- 安卓客户端
+    + https://yesu.co/static/upload/JesusChrist_v1.0.1.apk
 
 
 ## 支持语言
