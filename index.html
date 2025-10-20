@@ -8,8 +8,8 @@
     <title>The Church in Jesus Christ</title>
     <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='%23f00' d='M5.979 10.974v5.021h7.041v11.99h5.042v-11.99h6.958v-5.021h-6.958v-6.958h-5.042v6.958h-7.041z'%3E%3C/path%3E%3C/svg%3E%0A" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='%23f00' d='M5.979 10.974v5.021h7.041v11.99h5.042v-11.99h6.958v-5.021h-6.958v-6.958h-5.042v6.958h-7.041z'%3E%3C/path%3E%3C/svg%3E%0A" />
-    <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/kindeditor@4.1.10/plugins/code/prettify.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css" />
     <style type="text/css">
         #loader{position:fixed;top:0;right:0;bottom:0;left:0;background-color:rgba(0,0,0,.1);z-index:99999}
         #loader .inner{position:absolute;top:0;right:0;bottom:0;left:0;width:240px;height:130px;margin:auto;padding-top:15px;text-align:center;color:#777;background-color:rgba(255,255,255,.8);z-index:100;border-radius:15px}
@@ -49,10 +49,10 @@
 
 <body>
     <div id="app"></div>
-    <script src="https://fastly.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
-    <script src="https://fastly.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
-    <script src="https://fastly.jsdelivr.net/npm/kindeditor@4.1.10/plugins/code/prettify.js"></script>
-    <script src="https://fastly.jsdelivr.net/npm/jquery.qrcode@1.0.3/jquery.qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
     <script type="text/javascript">
         jQuery(document).ready(function ($) {
             // IE跨域兼容
@@ -1476,7 +1476,7 @@
                         arr.push('\t\t\t\t\t\t</form>\n');
                         // 评论列表
                         var comments = render.levels(data.comments.filter(function(item, i) {
-                            return item.article_id == article ? article.id : 0;
+                            return item.article_id == (article ? article.id : 0);
                         }), 0, 0);
                         if (comments.length) {
                             var user = render.format(data.users, 'username');
