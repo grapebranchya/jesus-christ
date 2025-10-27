@@ -2062,7 +2062,7 @@
                             for (var i = 0; i < o.length; i++) {
                                 var c = o.item(i);
                                 if (['BR', 'HR', 'TEXTAREA', 'SCRIPT'].indexOf(c.tagName) !== -1) continue;
-                                if (c.className != '' && c.className != null && c.className != undefined && c.className == 'ignore') continue;
+                                if (c.className != '' && c.className != null && c.className != undefined && c.className.indexOf('ignore') !== -1) continue;
                                 if (c.title != '' && c.title != null) {
                                     c.title = tran(c.title);
                                 }
