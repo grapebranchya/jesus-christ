@@ -372,7 +372,7 @@
                 var d = ('0' + (t.getDate() + 1)).slice(-2); // +1 day
                 render.beforeSend();
                 if (render.cache[render.lang] && render.cache[render.lang].expires < new Date(y + '-' + m + '-' + d).getTime()) {
-                    render.success(render.cache[render.lang].datas);
+                    render.dispatch(render.cache[render.lang].datas);
                 } else {
                     render.ajax('GET', render.api + '/static/upload/json/' + (render.lang.match(/^zh-/) ? 'zh-CN' : render.lang) + '.json', { token: '' }, render.success, render.fail);
                 }
@@ -630,28 +630,38 @@
             // Route to page
             success: function(res) {
                 if (!res || res.code) return render.err404(res);
-                render.site_url = document.domain.match(/localhost|127.0.0.1/i) ? '.' : (res.data.setting.site ? res.data.setting.site : res.data.site_url);
-                render.cdn_url = document.domain.match(/localhost|127.0.0.1/i) ? '.' : (document.domain.match(/\w.+.pages.dev$/i) ? render.api : (res.data.setting.static ? res.data.setting.static : render.site_url));
-                document.title = render.title(res.data);
+                // cache data
+                render.cache[render.lang] = {
+                    expires: new Date().getTime(),
+                    datas: res.data
+                };
+                render.dispatch(res.data);
+            },
+
+            // Dispatch data
+            dispatch: function(data) {
+                render.site_url = document.domain.match(/localhost|127.0.0.1/i) ? '.' : (data.setting.site ? data.setting.site : data.site_url);
+                render.cdn_url = document.domain.match(/localhost|127.0.0.1/i) ? '.' : (document.domain.match(/\w.+.pages.dev$/i) ? render.api : (data.setting.static ? data.setting.static : render.site_url));
+                document.title = render.title(data);
                 var links = document.head.getElementsByTagName('link');
                 for (var i = 0; i < links.length; i++) {
                     var rel = (links[i].getAttribute('rel') || '').toLowerCase();
                     if (rel.match(/(?:shortcut\s+)?icon/)) {
-                        if (res.data.setting.webLogo) links[i].href = res.data.setting.webLogo.replace(/^.*?(\/static\/.+)$/i, render.cdn_url + '$1');
+                        if (data.setting.webLogo) links[i].href = data.setting.webLogo.replace(/^.*?(\/static\/.+)$/i, render.cdn_url + '$1');
                     }
                 }
-                render.voice = res.data.voice || '';
+                render.voice = data.voice || '';
                 var arr = [];
-                arr.push(render.header(res.data));
-                arr.push(render.main(res.data));
-                arr.push(render.footer(res.data));
-                arr.push(render.sch(res.data));
-                arr.push(render.nav(res.data));
+                arr.push(render.header(data));
+                arr.push(render.main(data));
+                arr.push(render.footer(data));
+                arr.push(render.sch(data));
+                arr.push(render.nav(data));
                 document.getElementById('app').innerHTML = arr.join('\n');
                 if (location.hash.replace(/#/, '').indexOf('#') !== -1) {
-                    render.sanitize(res.data);
+                    render.sanitize(data);
                 } else render.top(function() {
-                    render.sanitize(res.data);
+                    render.sanitize(data);
                 });
             },
 
@@ -2093,7 +2103,6 @@
                     var style = document.createElement('link');
                     style.rel = 'stylesheet';
                     style.href = document.domain.match(/localhost|127.0.0.1/i) ? './static/css/meetei-mayek.css' : 'https://fonts.googleapis.com/css?family=Noto Sans Meetei Mayek';
-                    style.crossOrigin = 'anonymous';
                     style.onload = function() {
                         var font = 'Noto Sans Meetei Mayek'
                         var fonts = document.body.style.fontFamily.split(',').map(function(item) {
@@ -2104,6 +2113,7 @@
                         if (fonts.indexOf(font) === -1) {
                             fonts.push(font);
                             document.body.style.fontFamily = fonts.join(',');
+                            document.getElementById('lang').style.cssText = 'font-family: "Noto Sans Meetei Mayek";';
                         }
                     }
                     document.head.appendChild(style);
@@ -2157,28 +2167,21 @@
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4) {
                         if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
-                            if (typeof callback === 'function') {
-                                try {
-                                    // cache data
-                                    render.cache[render.lang] = {
-                                        expires: new Date().getTime(),
-                                        datas: JSON.parse(xhr.responseText)
-                                    };
-                                    callback(JSON.parse(xhr.responseText));
-                                } catch(e) {
-                                    callback({code: 1, msg: 'JSON data parse error!'});
-                                }
+                            try {
+                                callback && callback(JSON.parse(xhr.responseText));
+                            } catch(e) {
+                                callback && callback({code: 1, msg: 'JSON data parse error!'});
                             }
                         } else {
-                            typeof fail === 'function' && fail(xhr.status);
+                            fail && fail(xhr.status);
                         }
                     }
                 }
                 xhr.ontimeout = function() {
-                    typeof fail === 'function' && fail(408);
+                    fail && fail(408);
                 }
                 xhr.onerror = function() {
-                    typeof fail === 'function' && fail(xhr.status, xhr.statusText);
+                    fail && fail(xhr.status, xhr.statusText);
                 }
             },
 
@@ -2189,32 +2192,41 @@
                 if (!(typeof FormData !== 'undefined' && datas instanceof FormData) && datas && typeof datas === 'object') {
                     for (var key in datas) {
                         if (params) params += '&';
-                        params += encodeURIComponent(key) +'='+ encodeURIComponent(datas[key]);
+                        params += encodeURIComponent(key) + '=' + encodeURIComponent(datas[key]);
                     }
                 } else {
                     params = datas;
                 }
-                var script = document.createElement('script');
-                var globFuncName = 'jsonp_' + render.path.replace(/[^\w]/g, '_');
-                script.src = url + (params ? ((url.indexOf('?') === -1 ? '?' : '&') + params) : '') + (params ? '&' : (url.indexOf('?') === -1 ? '?' : '&')) + 'callback='+ globFuncName + '&__=' + new Date().getTime() + parseInt(Math.random() * 1000);
-                document.head.appendChild(script).parentNode.removeChild(script);
-                var timeout = setTimeout(function() {
-                    window[globFuncName] = null;
-                    script.onerror = null;
-                    fail && fail(408);
-                }, 30000);
-                window[globFuncName] = function (data) {
-                    window[globFuncName] = null;
-                    script.onerror = null;
-                    clearTimeout(timeout);
+                var globFuncName = 'jsonp_callback';
+                if (!window[globFuncName] || typeof window[globFuncName] !== 'function') {
+                    window[globFuncName] = function() {};
+                }
+                var originalCallback = window[globFuncName];
+                var callbackFired = false;
+                window[globFuncName] = function(data) {
+                    callbackFired = true;
                     callback && callback(data);
-                }
+                    setTimeout(function() {
+                        window[globFuncName] = originalCallback;
+                    }, 0);
+                };
+                var script = document.createElement('script');
+                script.src = url + (params ? ((url.indexOf('?') === -1 ? '?' : '&') + params) : '') + (params ? '&' : (url.indexOf('?') === -1 ? '?' : '&')) + 'callback=' + globFuncName + '&__=' + new Date().getTime() + parseInt(Math.random() * 1000);
                 script.onerror = function() {
-                    window[globFuncName] = null;
-                    script.onerror = null;
+                    if (!callbackFired) {
+                        fail && fail(500);
+                    }
+                };
+                document.head.appendChild(script);
+                var timeout = setTimeout(function() {
+                    if (!callbackFired) {
+                        window[globFuncName] = originalCallback;
+                        fail && fail(408);
+                    }
+                }, 30000);
+                window[globFuncName].cleanup = function() {
                     clearTimeout(timeout);
-                    fail && fail(500);
-                }
+                };
             }
         }
         render.init();
